@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard | Smart Culinary Surabaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     SMART CULINARY SURABAYA - ADMIN DASHBOARD
+     File: admin.html
+
+     >>> GANTI PASSWORD ADMIN DI BARIS BERIKUT <<<
+     Cari "ADMIN_PASSWORD" di JavaScript, ganti nilainya.
+     Default: admin123
+     ========================================================= */
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #00d2ff;
+    --primary-dim: #0091b3;
+    --accent-gold: #ffd24d;
+    --accent-red: #ff4d6d;
+    --accent-green: #4ade80;
+    --accent-purple: #c084fc;
+    --bg-deep: #050b18;
+    --bg-mid: #0a1428;
+    --glass-bg: rgba(15, 25, 50, 0.65);
+    --glass-border: rgba(0, 210, 255, 0.18);
+    --text-primary: #ffffff;
+    --text-muted: #8a9bb8;
+  }
+
+  html, body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.14), transparent 45%),
+      radial-gradient(circle at 85% 70%, rgba(255, 77, 109, 0.08), transparent 45%),
+      var(--bg-deep);
+  }
+
+  body {
+    background-image:
+      linear-gradient(rgba(0, 210, 255, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 210, 255, 0.018) 1px, transparent 1px);
+    background-size: 70px 70px;
+  }
+
+  /* ============== LOGIN SCREEN ============== */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+  .login-logo {
+    width: 80px;
+    height: 88px;
+    margin: 0 auto 16px;
+    filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.4));
+  }
+  .login-card h1 {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .login-card .subtitle {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    margin-bottom: 24px;
+  }
+  .login-card .form-group {
+    text-align: left;
+    margin-bottom: 14px;
+  }
+  .login-card label {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .login-card input {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  .login-card input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 210, 255, 0.3);
+  }
+  .login-error {
+    color: var(--accent-red);
+    font-size: 0.82rem;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+  .login-back {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    text-decoration: none;
+  }
+  .login-back:hover { color: var(--primary); }
+  .login-hint {
+    margin-top: 16px;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    background: rgba(0, 210, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px dashed var(--glass-border);
+  }
+  .login-hint code {
+    color: var(--accent-gold);
+    background: rgba(0,0,0,0.3);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ============== DASHBOARD ============== */
+  .dashboard {
+    display: none;
+  }
+  .dashboard.active {
+    display: block;
+  }
+
+  .dash-header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 20, 40, 0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    z-index: 50;
+  }
+  .dash-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .dash-brand svg {
+    width: 36px; height: 40px;
+  }
+  .dash-brand-text strong {
+    display: block;
+    font-size: 0.96rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .dash-brand-text span {
+    font-size: 0.7rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .dash-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn-action {
+    padding: 8px 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 210, 255, 0.06);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.82rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-action:hover {
+    color: #fff;
+    background: rgba(0, 210, 255, 0.15);
+  }
+  .btn-action.danger {
+    border-color: rgba(255, 77, 109, 0.3);
+    color: var(--accent-red);
+  }
+  .btn-action.danger:hover {
+    background: rgba(255, 77, 109, 0.15);
+  }
+
+  .dash-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: var(--glass-bg);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 22px;
+    backdrop-filter: blur(20px);
+  }
+  .tab-btn {
+    padding: 9px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn.active {
+    background: var(--primary);
+    color: #051320;
+    font-weight: 600;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards */
+  .card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(20px);
+  }
+  .card h2 {
+    font-size: 1.05rem;
+    color: #fff;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2::before {
+    content: "";
+    width: 3px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.full { grid-template-columns: 1fr; }
+
+  .field label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.25s ease;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .field select { cursor: pointer; }
+  .field-hint {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .save-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .btn-save {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 210, 255, 0.3); }
+  .btn-cancel {
+    background: rgba(255, 77, 109, 0.1);
+    color: var(--accent-red);
+    border: 1px solid rgba(255, 77, 109, 0.3);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .btn-cancel:hover { background: rgba(255, 77, 109, 0.2); }
+  .btn-add {
+    background: var(--accent-green);
+    color: #042810;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+  }
+  .btn-add:hover { transform: translateY(-2px); }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent-green);
+    color: #042810;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s ease;
+    z-index: 1000;
+    font-size: 0.92rem;
+  }
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  #toast.error { background: var(--accent-red); color: #fff; }
+
+  /* Culinary list */
+  .culinary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .cul-item {
+    padding: 14px;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cul-emoji {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .cul-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .cul-info h4 {
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+  .cul-info p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .cul-region-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    background: rgba(0, 210, 255, 0.12);
+    color: var(--primary);
+    border-radius: 6px;
+    font-size: 0.66rem;
+    margin-right: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+  }
+  .cul-tag-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 6px;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+  }
+  .cul-tag-badge.legendaris { background: var(--accent-gold); color: #2a1500; }
+  .cul-tag-badge.kekinian { background: var(--accent-purple); color: #fff; }
+  .cul-tag-badge.tradisional { background: rgba(74, 222, 128, 0.2); color: var(--accent-green); }
+
+  .cul-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cul-actions button {
+    padding: 5px 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 210, 255, 0.05);
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.75rem;
+  }
+  .cul-actions button:hover { color: #fff; background: rgba(0, 210, 255, 0.15); }
+  .cul-actions button.del { color: var(--accent-red); border-color: rgba(255, 77, 109, 0.3); }
+  .cul-actions button.del:hover { background: rgba(255, 77, 109, 0.15); }
+
+  /* Editor modal */
+  .editor-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 11, 24, 0.78);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 30px 18px;
+    z-index: 200;
+    overflow-y: auto;
+  }
+  .editor-overlay.active { display: flex; }
+  .editor {
+    background: rgba(15, 25, 50, 0.97);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 760px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    margin: auto;
+    overflow: hidden;
+    animation: slideUpEditor 0.35s ease;
+  }
+  @keyframes slideUpEditor {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .editor-head {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .editor-head h3 {
+    font-size: 1.05rem;
+    color: #fff;
+  }
+  .editor-close {
+    width: 32px; height: 32px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.05rem;
+    display: grid; place-items: center;
+  }
+  .editor-close:hover {
+    background: rgba(255, 77, 109, 0.2);
+  }
+  .editor-body {
+    padding: 22px 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .editor-foot {
+    padding: 14px 24px;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .place-editor {
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .place-editor h5 {
+    font-size: 0.78rem;
+    color: var(--primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .form-row, .form-row.three { grid-template-columns: 1fr; }
+    .dash-header { padding: 12px 16px; }
+    .dash-brand-text strong { font-size: 0.86rem; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-mid); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-dim);
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================ LOGIN SCREEN ================ -->
+<div class="login-wrap" id="loginScreen">
+  <form class="login-card" id="loginForm" onsubmit="return false;">
+    <svg class="login-logo" viewBox="0 0 100 110">
+      <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+      <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+      <polygon points="50,24 46,34 54,34" fill="#fff"/>
+      <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+      <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+      <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+      <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+      <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+    </svg>
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Smart Culinary Surabaya</p>
+
+    <div class="form-group">
+      <label for="loginPass">Password Admin</label>
+      <input type="password" id="loginPass" autocomplete="current-password" placeholder="Masukkan password..." required>
+    </div>
+
+    <button type="submit" class="login-btn" id="loginBtn">Masuk Dashboard</button>
+    <div class="login-error" id="loginError"></div>
+
+    <div class="login-hint">
+      Password default: <code>admin123</code> (ganti di file <code>admin.html</code>)
+    </div>
+
+    <a href="index.html" class="login-back">← Kembali ke halaman utama</a>
+  </form>
+</div>
+
+<!-- ================ DASHBOARD ================ -->
+<div class="dashboard" id="dashboard">
+  <header class="dash-header">
+    <div class="dash-brand">
+      <svg viewBox="0 0 100 110">
+        <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+        <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+        <polygon points="50,24 46,34 54,34" fill="#fff"/>
+        <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+        <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+        <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+        <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+        <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+      </svg>
+      <div class="dash-brand-text">
+        <strong>Admin Dashboard</strong>
+        <span>CMS · Smart Culinary</span>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <a href="index.html" class="btn-action" target="_blank">↗ Lihat Website</a>
+      <button class="btn-action danger" id="btnReset">⟳ Reset Default</button>
+      <button class="btn-action" id="btnLogout">Keluar</button>
+    </div>
+  </header>
+
+  <div class="dash-container">
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="identitas">Identitas</button>
+      <button class="tab-btn" data-tab="mengapa">Mengapa Kuliner</button>
+      <button class="tab-btn" data-tab="youtube">Video YouTube</button>
+      <button class="tab-btn" data-tab="footer">Kredit Footer</button>
+      <button class="tab-btn" data-tab="kuliner">Daftar Kuliner</button>
+    </div>
+
+    <!-- Tab: Identitas -->
+    <div class="tab-content active" data-tab="identitas">
+      <div class="card">
+        <h2>Identitas Kota Surabaya</h2>
+        <div class="form-row three">
+          <div class="field">
+            <label>Hari Jadi</label>
+            <input type="text" id="iHariJadi">
+          </div>
+          <div class="field">
+            <label>Julukan</label>
+            <input type="text" id="iJulukan">
+          </div>
+          <div class="field">
+            <label>Penduduk</label>
+            <input type="text" id="iPenduduk">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Luas Wilayah</label>
+            <input type="text" id="iLuas">
+          </div>
+          <div class="field">
+            <label>Pesisir</label>
+            <input type="text" id="iPesisir">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field">
+            <label>Narasi Sejarah Kota</label>
+            <textarea id="iNarasi" rows="6"></textarea>
+            <div class="field-hint">Akan tampil di section "Identitas Kota Surabaya" di halaman utama.</div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-save" data-save="identitas">💾 Simpan Identitas</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Mengapa Kuliner -->
+    <div class="tab-content" data-tab="mengapa">
+      <div class="card">
+        <h2>Mengapa Surabaya Kaya Kuliner</h2>
+        <div class="form-row full">
+          <div class="field">
+            <label>Narasi</label>
+            <textarea id="wText" rows="8"></textarea>
+            <div class="field-hint">Penjelasan tentang akar sejarah kekayaan kuliner Surabaya.</div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-save" data-save="mengapa">💾 Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: YouTube -->
+    <div class="tab-content" data-tab="youtube">
+      <div class="card">
+        <h2>Video YouTube</h2>
+        <div class="form-row">
+          <div class="field">
+            <label>YouTube Video ID</label>
+            <input type="text" id="ytId" placeholder="Misal: m943fgPhv3s">
+            <div class="field-hint">Ambil dari URL: https://youtu.be/<strong>VIDEO_ID</strong>?si=...</div>
+          </div>
+          <div class="field">
+            <label>Judul / Caption</label>
+            <input type="text" id="ytTitle" placeholder="Mengenal Sejarah Kota Surabaya">
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-save" data-save="youtube">💾 Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Footer -->
+    <div class="tab-content" data-tab="footer">
+      <div class="card">
+        <h2>Kredit Pembuat (Footer)</h2>
+        <div class="form-row">
+          <div class="field">
+            <label>Kelompok</label>
+            <input type="text" id="fKelompok" placeholder="Kelompok 1">
+          </div>
+          <div class="field">
+            <label>Kelas</label>
+            <input type="text" id="fKelas" placeholder="Kelas X-MIPA-1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Sekolah</label>
+            <input type="text" id="fSekolah" placeholder="SMA Negeri ...">
+          </div>
+          <div class="field">
+            <label>Tahun Ajaran</label>
+            <input type="text" id="fTahun" placeholder="Tahun Ajaran 2025/2026">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field">
+            <label>Mata Pelajaran</label>
+            <input type="text" id="fMapel" placeholder="Tugas TIK / Informatika">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field">
+            <label>Anggota (1 baris per orang)</label>
+            <textarea id="fAnggota" rows="6" placeholder="1. Nama Lengkap (NIS)&#10;2. Nama Lengkap (NIS)"></textarea>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-save" data-save="footer">💾 Simpan Kredit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Kuliner -->
+    <div class="tab-content" data-tab="kuliner">
+      <div class="card">
+        <h2>Daftar Kuliner</h2>
+        <p style="color:var(--text-muted); font-size:0.86rem; margin-bottom:10px;">
+          Klik kartu untuk edit, atau tambah makanan baru.
+        </p>
+        <button class="btn-add" id="btnAddCulinary">+ Tambah Makanan Baru</button>
+        <div class="culinary-list" id="culinaryList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Editor Modal untuk edit makanan -->
+<div class="editor-overlay" id="editorOverlay">
+  <div class="editor">
+    <div class="editor-head">
+      <h3 id="editorTitle">Edit Makanan</h3>
+      <button class="editor-close" id="editorClose">&times;</button>
+    </div>
+    <div class="editor-body">
+      <div class="form-row">
+        <div class="field">
+          <label>Nama Makanan</label>
+          <input type="text" id="eName">
+        </div>
+        <div class="field">
+          <label>Emoji</label>
+          <input type="text" id="eEmoji" maxlength="2" placeholder="🍲">
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="field">
+          <label>Wilayah</label>
+          <select id="eRegion">
+            <option value="utara">Surabaya Utara</option>
+            <option value="pusat">Surabaya Pusat</option>
+            <option value="timur">Surabaya Timur</option>
+            <option value="barat">Surabaya Barat</option>
+            <option value="selatan">Surabaya Selatan</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tag</label>
+          <select id="eTag">
+            <option value="tradisional">Tradisional</option>
+            <option value="legendaris">Legendaris</option>
+            <option value="kekinian">Kekinian</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Kategori</label>
+          <input type="text" id="eCategory" placeholder="Sup Daging, Sate Bakar, dll">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Estimasi Harga</label>
+          <input type="text" id="ePrice" placeholder="Rp 30.000 sampai Rp 50.000">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Sejarah / Deskripsi</label>
+          <textarea id="eHistory" rows="5"></textarea>
+        </div>
+      </div>
+
+      <h4 style="color:#fff; font-size:0.95rem; margin: 18px 0 10px;">3 Tempat Populer</h4>
+
+      <div class="place-editor">
+        <h5>Tempat 1</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace0Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace0Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace0Meta" placeholder="Buka pagi, sekitar Rp 25.000"></div>
+      </div>
+
+      <div class="place-editor">
+        <h5>Tempat 2</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace1Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace1Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace1Meta"></div>
+      </div>
+
+      <div class="place-editor">
+        <h5>Tempat 3</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace2Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace2Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace2Meta"></div>
+      </div>
+    </div>
+    <div class="editor-foot">
+      <button class="btn-save" id="editorSave">💾 Simpan</button>
+      <button class="btn-cancel" id="editorCancel">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<!-- Load shared data -->
+<script src="data.js"></script>
+
+<script>
+  /* =========================================================
+     >>>>>>> GANTI PASSWORD ADMIN DI BAWAH INI <<<<<<<
+  ========================================================= */
+  const ADMIN_PASSWORD = "admin123";
+
+  /* =========================================================
+     LOGIN HANDLING
+  ========================================================= */
+  const loginScreen = document.getElementById('loginScreen');
+  const dashboard = document.getElementById('dashboard');
+  const loginForm = document.getElementById('loginForm');
+  const loginPass = document.getElementById('loginPass');
+  const loginError = document.getElementById('loginError');
+
+  function showDashboard() {
+    loginScreen.style.display = 'none';
+    dashboard.classList.add('active');
+    loadAllData();
+  }
+
+  function showLogin() {
+    loginScreen.style.display = 'flex';
+    dashboard.classList.remove('active');
+    loginPass.value = '';
+    loginError.textContent = '';
+  }
+
+  // Auto-login jika sudah pernah login (sessionStorage)
+  if (sessionStorage.getItem('sc_admin_login') === 'yes') {
+    showDashboard();
+  }
+
+  loginForm.addEventListener('submit', () => {
+    const pass = loginPass.value;
+    if (pass === ADMIN_PASSWORD) {
+      sessionStorage.setItem('sc_admin_login', 'yes');
+      loginError.textContent = '';
+      showDashboard();
+    } else {
+      loginError.textContent = 'Password salah. Coba lagi.';
+      loginPass.focus();
+      loginPass.select();
+    }
+  });
+
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    sessionStorage.removeItem('sc_admin_login');
+    showLogin();
+  });
+
+  /* =========================================================
+     LOAD DATA INTO FORM
+  ========================================================= */
+  let workingData = null;
+
+  function loadAllData() {
+    workingData = window.scLoadData();
+
+    // Identitas
+    document.getElementById('iHariJadi').value = workingData.identitas.hariJadi;
+    document.getElementById('iJulukan').value  = workingData.identitas.julukan;
+    document.getElementById('iPenduduk').value = workingData.identitas.penduduk;
+    document.getElementById('iLuas').value     = workingData.identitas.luas;
+    document.getElementById('iPesisir').value  = workingData.identitas.pesisir;
+    document.getElementById('iNarasi').value   = workingData.identitas.narasi;
+
+    // Why
+    document.getElementById('wText').value = workingData.whyCulinary;
+
+    // YouTube
+    document.getElementById('ytId').value    = workingData.youtube.id;
+    document.getElementById('ytTitle').value = workingData.youtube.title;
+
+    // Footer
+    document.getElementById('fKelompok').value = workingData.footer.kelompok;
+    document.getElementById('fKelas').value    = workingData.footer.kelas;
+    document.getElementById('fSekolah').value  = workingData.footer.sekolah;
+    document.getElementById('fTahun').value    = workingData.footer.tahun;
+    document.getElementById('fMapel').value    = workingData.footer.mapel;
+    document.getElementById('fAnggota').value  = workingData.footer.anggota;
+
+    // Culinary list
+    renderCulinaryList();
+  }
+
+  /* =========================================================
+     SAVE PER SECTION
+  ========================================================= */
+  document.querySelectorAll('.btn-save[data-save]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.getAttribute('data-save');
+      saveSection(section);
+    });
+  });
+
+  function saveSection(section) {
+    if (section === 'identitas') {
+      workingData.identitas = {
+        hariJadi: document.getElementById('iHariJadi').value.trim(),
+        julukan:  document.getElementById('iJulukan').value.trim(),
+        penduduk: document.getElementById('iPenduduk').value.trim(),
+        luas:     document.getElementById('iLuas').value.trim(),
+        pesisir:  document.getElementById('iPesisir').value.trim(),
+        narasi:   document.getElementById('iNarasi').value.trim()
+      };
+    } else if (section === 'mengapa') {
+      workingData.whyCulinary = document.getElementById('wText').value.trim();
+    } else if (section === 'youtube') {
+      let ytIdRaw = document.getElementById('ytId').value.trim();
+      // Auto-extract ID kalau user paste full URL
+      const match = ytIdRaw.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+      if (match) ytIdRaw = match[1];
+      workingData.youtube = {
+        id: ytIdRaw,
+        title: document.getElementById('ytTitle').value.trim()
+      };
+    } else if (section === 'footer') {
+      workingData.footer = {
+        kelompok: document.getElementById('fKelompok').value.trim(),
+        kelas:    document.getElementById('fKelas').value.trim(),
+        sekolah:  document.getElementById('fSekolah').value.trim(),
+        tahun:    document.getElementById('fTahun').value.trim(),
+        mapel:    document.getElementById('fMapel').value.trim(),
+        anggota:  document.getElementById('fAnggota').value
+      };
+    }
+    if (window.scSaveData(workingData)) {
+      toast('Berhasil disimpan! Refresh halaman utama untuk melihat hasilnya.');
+    } else {
+      toast('Gagal menyimpan!', true);
+    }
+  }
+
+  /* =========================================================
+     TABS
+  ========================================================= */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.tab-content[data-tab="${tab}"]`).classList.add('active');
+    });
+  });
+
+  /* =========================================================
+     CULINARY LIST
+  ========================================================= */
+  const culinaryList = document.getElementById('culinaryList');
+
+  function renderCulinaryList() {
+    culinaryList.innerHTML = '';
+    workingData.culinary.forEach((f, idx) => {
+      const div = document.createElement('div');
+      div.className = 'cul-item';
+      div.innerHTML = `
+        <div class="cul-emoji">${f.emoji}</div>
+        <div class="cul-info">
+          <h4>${f.name}</h4>
+          <p>
+            <span class="cul-region-badge">${f.regionLabel}</span>
+            <span class="cul-tag-badge ${f.tag}">${f.tag}</span>
+          </p>
+          <p style="margin-top:4px;">${f.price}</p>
+        </div>
+        <div class="cul-actions">
+          <button class="edit-btn">Edit</button>
+          <button class="del del-btn">Hapus</button>
+        </div>
+      `;
+      div.querySelector('.edit-btn').addEventListener('click', () => openEditor(idx));
+      div.querySelector('.del-btn').addEventListener('click', () => {
+        if (confirm(`Hapus "${f.name}"?`)) {
+          workingData.culinary.splice(idx, 1);
+          if (window.scSaveData(workingData)) {
+            renderCulinaryList();
+            toast('Berhasil dihapus.');
+          }
+        }
+      });
+      culinaryList.appendChild(div);
+    });
+  }
+
+  /* =========================================================
+     EDITOR MODAL
+  ========================================================= */
+  const editorOverlay = document.getElementById('editorOverlay');
+  const editorTitle = document.getElementById('editorTitle');
+  let editingIdx = -1;
+
+  function openEditor(idx) {
+    editingIdx = idx;
+    if (idx === -1) {
+      editorTitle.textContent = 'Tambah Makanan Baru';
+      // Reset form
+      document.getElementById('eName').value = '';
+      document.getElementById('eEmoji').value = '🍲';
+      document.getElementById('eRegion').value = 'pusat';
+      document.getElementById('eTag').value = 'tradisional';
+      document.getElementById('eCategory').value = '';
+      document.getElementById('ePrice').value = '';
+      document.getElementById('eHistory').value = '';
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`ePlace${i}Name`).value = '';
+        document.getElementById(`ePlace${i}Addr`).value = '';
+        document.getElementById(`ePlace${i}Meta`).value = '';
+      }
+    } else {
+      const f = workingData.culinary[idx];
+      editorTitle.textContent = `Edit: ${f.name}`;
+      document.getElementById('eName').value = f.name;
+      document.getElementById('eEmoji').value = f.emoji;
+      document.getElementById('eRegion').value = f.region;
+      document.getElementById('eTag').value = f.tag;
+      document.getElementById('eCategory').value = f.category;
+      document.getElementById('ePrice').value = f.price;
+      document.getElementById('eHistory').value = f.history;
+      for (let i = 0; i < 3; i++) {
+        const p = f.places[i] || { name: '', addr: '', meta: '' };
+        document.getElementById(`ePlace${i}Name`).value = p.name;
+        document.getElementById(`ePlace${i}Addr`).value = p.addr;
+        document.getElementById(`ePlace${i}Meta`).value = p.meta;
+      }
+    }
+    editorOverlay.classList.add('active');
+  }
+
+  function closeEditor() {
+    editorOverlay.classList.remove('active');
+    editingIdx = -1;
+  }
+
+  document.getElementById('editorClose').addEventListener('click', closeEditor);
+  document.getElementById('editorCancel').addEventListener('click', closeEditor);
+  editorOverlay.addEventListener('click', e => {
+    if (e.target === editorOverlay) closeEditor();
+  });
+
+  document.getElementById('editorSave').addEventListener('click', () => {
+    const name = document.getElementById('eName').value.trim();
+    if (!name) {
+      toast('Nama makanan wajib diisi!', true);
+      return;
+    }
+    const region = document.getElementById('eRegion').value;
+    const regionMap = {
+      utara: 'Surabaya Utara', pusat: 'Surabaya Pusat',
+      timur: 'Surabaya Timur', barat: 'Surabaya Barat', selatan: 'Surabaya Selatan'
+    };
+    const places = [];
+    for (let i = 0; i < 3; i++) {
+      const pName = document.getElementById(`ePlace${i}Name`).value.trim();
+      if (pName) {
+        places.push({
+          name: pName,
+          addr: document.getElementById(`ePlace${i}Addr`).value.trim(),
+          meta: document.getElementById(`ePlace${i}Meta`).value.trim()
+        });
+      }
+    }
+    const newItem = {
+      id: editingIdx === -1
+        ? 'cust-' + Date.now()
+        : workingData.culinary[editingIdx].id,
+      name: name,
+      emoji: document.getElementById('eEmoji').value.trim() || '🍽️',
+      region: region,
+      regionLabel: regionMap[region],
+      tag: document.getElementById('eTag').value,
+      category: document.getElementById('eCategory').value.trim(),
+      price: document.getElementById('ePrice').value.trim(),
+      history: document.getElementById('eHistory').value.trim(),
+      places: places
+    };
+    if (editingIdx === -1) {
+      workingData.culinary.push(newItem);
+    } else {
+      workingData.culinary[editingIdx] = newItem;
+    }
+    if (window.scSaveData(workingData)) {
+      renderCulinaryList();
+      closeEditor();
+      toast('Berhasil disimpan!');
+    } else {
+      toast('Gagal menyimpan!', true);
+    }
+  });
+
+  document.getElementById('btnAddCulinary').addEventListener('click', () => openEditor(-1));
+
+  /* =========================================================
+     RESET DEFAULT
+  ========================================================= */
+  document.getElementById('btnReset').addEventListener('click', () => {
+    if (confirm('Reset semua data ke default? Perubahan yang sudah disimpan akan hilang.')) {
+      window.scResetData();
+      loadAllData();
+      toast('Data berhasil direset ke default.');
+    }
+  });
+
+  /* =========================================================
+     TOAST
+  ========================================================= */
+  let toastTimer;
+  function toast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.toggle('error', !!isError);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+
+</body>
+</html>

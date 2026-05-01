@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Culinary Surabaya | Smart City Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     SMART CULINARY SURABAYA - LANDING PAGE
+     File: index.html
+     Tugas TIK · HTML + CSS + Vanilla JS
+
+     UBAH NOMOR WHATSAPP/EMAIL: cari "GANTI KONTAK" di JS
+     UBAH PASSWORD ADMIN: lihat file admin.html
+     UBAH DATA KULINER: lihat file data.js atau buka admin.html
+  ========================================================= */
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #00d2ff;
+    --primary-dim: #0091b3;
+    --accent-gold: #ffd24d;
+    --accent-red: #ff4d6d;
+    --accent-green: #4ade80;
+    --accent-purple: #c084fc;
+    --bg-deep: #050b18;
+    --bg-mid: #0a1428;
+    --glass-bg: rgba(15, 25, 50, 0.55);
+    --glass-border: rgba(0, 210, 255, 0.18);
+    --text-primary: #ffffff;
+    --text-muted: #8a9bb8;
+  }
+
+  html, body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.14), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(255, 77, 109, 0.08), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(125, 60, 220, 0.10), transparent 50%),
+      var(--bg-deep);
+  }
+
+  body {
+    background-image:
+      linear-gradient(rgba(0, 210, 255, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 210, 255, 0.018) 1px, transparent 1px);
+    background-size: 70px 70px;
+  }
+
+  /* ============== LOADING SCREEN ============== */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--bg-deep);
+    z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 24px;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-logo {
+    width: 96px; height: 105px;
+    animation: loaderFloat 2.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.4));
+  }
+  @keyframes loaderFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .loader-title {
+    font-weight: 700;
+    font-size: 0.98rem;
+    letter-spacing: 1.5px;
+    color: var(--primary);
+  }
+  .loader-bar-wrap {
+    width: 220px; height: 3px;
+    background: rgba(0, 210, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+  }
+  .loader-bar {
+    height: 100%; width: 0%;
+    background: var(--primary);
+    border-radius: 4px;
+    animation: loaderFill 1.4s ease-in-out forwards;
+  }
+  @keyframes loaderFill {
+    0% { width: 0%; } 50% { width: 60%; } 100% { width: 100%; }
+  }
+  .loader-percent {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ============== REVEAL ON SCROLL ============== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ============== STICKY NAV HEADER ============== */
+  .top-nav {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 1280px;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 20, 40, 0.78);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .nav-shield {
+    width: 36px; height: 40px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  .nav-brand:hover .nav-shield { transform: scale(1.06); }
+  .nav-brand-text {
+    line-height: 1.1;
+  }
+  .nav-brand-text strong {
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 700;
+    display: block;
+  }
+  .nav-brand-text span {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+
+  .nav-menu {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+  .nav-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+  }
+  .nav-menu a:hover {
+    color: #fff;
+    background: rgba(0, 210, 255, 0.1);
+  }
+  .nav-menu a.active {
+    color: var(--primary);
+    background: rgba(0, 210, 255, 0.12);
+  }
+
+  .nav-side {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(0, 210, 255, 0.06);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .nav-pill #datetime {
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.72rem;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    box-shadow: 0 0 6px var(--accent-green);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  /* Mobile nav toggle */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ============== LAYOUT ============== */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 96px 20px 24px; /* top padding kasih ruang sticky nav */
+  }
+
+  /* ============== HERO ============== */
+  .hero {
+    text-align: center;
+    padding: 30px 20px 40px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(0, 210, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    font-size: 0.74rem;
+    color: var(--primary);
+    margin-bottom: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.18;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--primary), #6df0ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.65;
+    font-size: 0.96rem;
+  }
+
+  /* ============== SECTION DIVIDER (LEBIH MINIMALIS) ============== */
+  .section-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 30px auto;
+    opacity: 0.5;
+    border-radius: 2px;
+  }
+
+  /* ============== GLASS CARD ============== */
+  .glass-card {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.3);
+    padding: 28px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.4), transparent);
+  }
+
+  .section-head {
+    margin-bottom: 22px;
+  }
+  .section-head h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-head h2::before {
+    content: "";
+    width: 4px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .section-head p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 6px;
+    margin-left: 16px;
+  }
+
+  /* ============== IDENTITAS ============== */
+  .identity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .identity-item {
+    padding: 16px 14px;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .identity-item:hover {
+    background: rgba(0, 210, 255, 0.08);
+    border-color: rgba(0, 210, 255, 0.4);
+    transform: translateY(-2px);
+  }
+  .identity-icon {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+    opacity: 0.9;
+  }
+  .identity-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .identity-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 2px;
+  }
+  .identity-text {
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: 0.94rem;
+  }
+  .identity-text strong { color: #fff; }
+
+  /* ============== YOUTUBE EMBED ============== */
+  .video-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  }
+  .video-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .video-caption {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* ============== WHY CULINARY ============== */
+  .why-text {
+    color: #d2dcef;
+    line-height: 1.75;
+    font-size: 0.96rem;
+  }
+  .why-pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .pillar {
+    padding: 12px;
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .pillar strong {
+    display: block;
+    color: var(--primary);
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  /* ============== PETA ============== */
+  .map-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 580px;
+    margin: 0 auto;
+    max-width: 880px;
+  }
+  .map-svg {
+    width: 100%;
+    height: 100%;
+  }
+  .region {
+    cursor: pointer;
+    stroke-width: 1.8;
+    transition: filter 0.3s ease, stroke-width 0.3s ease;
+  }
+  .region.r-utara   { fill: rgba(0, 210, 255, 0.13);   stroke: var(--primary); }
+  .region.r-pusat   { fill: rgba(255, 210, 77, 0.16);  stroke: var(--accent-gold); }
+  .region.r-timur   { fill: rgba(74, 222, 128, 0.13);  stroke: var(--accent-green); }
+  .region.r-selatan { fill: rgba(255, 77, 109, 0.13);  stroke: var(--accent-red); }
+  .region.r-barat   { fill: rgba(192, 132, 252, 0.13); stroke: var(--accent-purple); }
+  .region:hover {
+    filter: brightness(1.4);
+    stroke-width: 2.6;
+  }
+  .region.active {
+    filter: brightness(1.5);
+    stroke-width: 2.6;
+  }
+  .region-label {
+    fill: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    pointer-events: none;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: rgba(5, 11, 24, 0.9);
+    stroke-width: 3px;
+  }
+  .region-sublabel {
+    fill: rgba(255,255,255,0.6);
+    font-size: 9px;
+    pointer-events: none;
+    text-anchor: middle;
+    font-weight: 500;
+    paint-order: stroke;
+    stroke: rgba(5, 11, 24, 0.9);
+    stroke-width: 2.5px;
+  }
+  .landmark { pointer-events: none; }
+  .landmark text {
+    fill: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: rgba(5, 11, 24, 0.9);
+    stroke-width: 2.5px;
+  }
+  .water-label {
+    fill: rgba(0, 210, 255, 0.5);
+    font-size: 11px;
+    font-style: italic;
+    pointer-events: none;
+  }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--glass-border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: var(--text-primary);
+  }
+  .legend-item:hover {
+    background: rgba(0, 210, 255, 0.14);
+    transform: translateY(-1px);
+  }
+  .legend-color {
+    width: 11px; height: 11px;
+    border-radius: 3px;
+  }
+
+  /* ============== FILTER BAR ============== */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+  }
+  .filter-btn {
+    padding: 7px 14px;
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .filter-btn:hover {
+    background: rgba(0, 210, 255, 0.14);
+    color: #fff;
+  }
+  .filter-btn.active {
+    background: var(--primary);
+    color: #051320;
+    border-color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 11px 14px 11px 38px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.92rem;
+    transition: border-color 0.25s ease;
+  }
+  .search-wrap input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .search-wrap::before {
+    content: "🔍";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    opacity: 0.6;
+  }
+
+  /* ============== FOOD GRID ============== */
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+    min-height: 200px;
+  }
+  .food-card {
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .food-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 210, 255, 0.5);
+    background: rgba(0, 210, 255, 0.08);
+  }
+  .food-card .food-emoji {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+    transition: transform 0.3s ease;
+  }
+  .food-card:hover .food-emoji { transform: scale(1.08); }
+  .food-card .food-region {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(0, 210, 255, 0.15);
+    color: var(--primary);
+    border-radius: 8px;
+    font-size: 0.66rem;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .food-card h3 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .food-card .food-price {
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  .food-card .food-tag {
+    position: absolute;
+    top: 10px; right: 10px;
+    padding: 2px 7px;
+    border-radius: 7px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .food-card .food-tag.legendaris { background: var(--accent-gold); color: #2a1500; }
+  .food-card .food-tag.kekinian   { background: var(--accent-purple); color: #fff; }
+
+  /* ============== MODAL ============== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(5, 11, 24, 0.78);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 18px;
+    animation: fadeIn 0.25s ease;
+  }
+  .modal-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: rgba(15, 25, 50, 0.96);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    animation: slideUp 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
+    position: relative;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(15px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  .modal-header {
+    padding: 26px 28px 16px;
+    border-bottom: 1px solid var(--glass-border);
+    text-align: center;
+    position: relative;
+  }
+  .modal-emoji { font-size: 3rem; margin-bottom: 6px; }
+  .modal-region-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(0, 210, 255, 0.15);
+    color: var(--primary);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .modal-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 34px; height: 34px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: grid; place-items: center;
+    transition: all 0.25s ease;
+  }
+  .modal-close:hover {
+    background: rgba(255, 77, 109, 0.2);
+    transform: rotate(90deg);
+  }
+  .modal-body { padding: 22px 28px 26px; }
+  .modal-section { margin-bottom: 18px; }
+  .modal-section:last-child { margin-bottom: 0; }
+  .modal-section-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .modal-section p {
+    color: #d2dcef;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+  .modal-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .modal-info-card {
+    padding: 12px 14px;
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+  }
+  .modal-info-card .label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 3px;
+  }
+  .modal-info-card .value {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .place-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .place-card {
+    padding: 12px 14px;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    transition: all 0.25s ease;
+  }
+  .place-card:hover {
+    background: rgba(0, 210, 255, 0.1);
+  }
+  .place-card .place-name {
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.92rem;
+    margin-bottom: 3px;
+  }
+  .place-card .place-addr {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .place-card .place-meta {
+    font-size: 0.76rem;
+    color: var(--accent-gold);
+    margin-bottom: 6px;
+  }
+  .place-card .maps-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.74rem;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 3px 9px;
+    background: rgba(0, 210, 255, 0.1);
+    border-radius: 6px;
+    transition: background 0.25s ease;
+  }
+  .place-card .maps-link:hover {
+    background: rgba(0, 210, 255, 0.22);
+  }
+
+  /* ============== FORM ============== */
+  .form-section {
+    background:
+      linear-gradient(135deg, rgba(0, 210, 255, 0.06), rgba(255, 77, 109, 0.04));
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 13px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 9px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.25s ease;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .form-group textarea { resize: vertical; min-height: 78px; }
+  .form-group select { cursor: pointer; }
+  .form-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 1;
+    justify-content: center;
+    min-width: 170px;
+  }
+  .btn-wa {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #fff;
+  }
+  .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3); }
+  .btn-email {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+    color: #fff;
+  }
+  .btn-email:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 210, 255, 0.3); }
+
+  /* ============== FOOTER ============== */
+  footer {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 30px 28px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(20px);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+    margin-bottom: 22px;
+  }
+  .footer-brand h3 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .footer-brand p {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+  .footer-credits {
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .footer-credits h4 {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .footer-credits .row {
+    font-size: 0.86rem;
+    color: #d2dcef;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+  .footer-credits .row strong {
+    color: #fff;
+    display: inline-block;
+    min-width: 90px;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+  .footer-bottom .heart { color: var(--accent-red); }
+
+  /* ============== BACK TO TOP ============== */
+  .back-top {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 210, 255, 0.15);
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 50;
+  }
+  .back-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-top:hover {
+    background: var(--primary);
+    color: #051320;
+    transform: translateY(-3px);
+  }
+
+  /* ============== RESPONSIVE ============== */
+  @media (max-width: 920px) {
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      margin-top: 6px;
+      background: rgba(10, 20, 40, 0.95);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      flex-direction: column;
+      padding: 8px;
+      display: none;
+      backdrop-filter: blur(20px);
+    }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { width: 100%; padding: 10px 14px; }
+    .nav-toggle { display: flex; }
+    .nav-side .nav-pill { display: none; }
+    .nav-side .nav-pill.live-pill { display: flex; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .modal-info-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 86px 12px 16px; }
+    .top-nav { padding: 9px 14px; }
+    .nav-brand-text strong { font-size: 0.85rem; }
+    .nav-brand-text span { font-size: 0.6rem; }
+    .glass-card { padding: 20px 18px; border-radius: 14px; }
+    .modal-header { padding: 22px 20px 14px; }
+    .modal-body { padding: 18px 20px 22px; }
+    .modal-title { font-size: 1.2rem; }
+    .btn { min-width: 100%; }
+    .region-label { font-size: 11px; }
+    .landmark text { font-size: 8px; }
+    .back-top { bottom: 14px; right: 14px; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-mid); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-dim);
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================ LOADING SCREEN ================ -->
+<div id="loader">
+  <svg class="loader-logo" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+    <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+    <polygon points="50,24 46,34 54,34" fill="#fff"/>
+    <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+    <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+    <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+    <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+    <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+  </svg>
+  <div class="loader-title">SMART CULINARY SURABAYA</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-percent" id="loaderPercent">0%</div>
+</div>
+
+<!-- ================ STICKY NAV HEADER ================ -->
+<nav class="top-nav" id="topNav">
+  <a href="#beranda" class="nav-brand">
+    <svg class="nav-shield" viewBox="0 0 100 110">
+      <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+      <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+      <polygon points="50,24 46,34 54,34" fill="#fff"/>
+      <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+      <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+      <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+      <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+      <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+    </svg>
+    <div class="nav-brand-text">
+      <strong>Smart Culinary</strong>
+      <span>Surabaya</span>
+    </div>
+  </a>
+
+  <div class="nav-menu" id="navMenu">
+    <a href="#beranda" class="nav-link">Beranda</a>
+    <a href="#identitas" class="nav-link">Identitas</a>
+    <a href="#mengapa" class="nav-link">Mengapa</a>
+    <a href="#peta" class="nav-link">Peta</a>
+    <a href="#kuliner" class="nav-link">Kuliner</a>
+    <a href="#saran" class="nav-link">Saran</a>
+  </div>
+
+  <div class="nav-side">
+    <div class="nav-pill live-pill">
+      <span class="live-dot"></span>
+      <span>Live</span>
+    </div>
+    <div class="nav-pill">
+      <span id="datetime">--:--</span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- ================ HERO ================ -->
+  <section class="hero reveal" id="beranda">
+    <span class="hero-tag">Sura ing Baya · Kota Pahlawan</span>
+    <h1>Jelajahi <span class="accent">Kuliner Khas</span><br>Kota Surabaya</h1>
+    <p>Smart City Dashboard untuk panduan kuliner di Surabaya, mulai dari makanan tradisional legendaris hingga kekinian. Klik wilayah pada peta atau langsung pilih makanan untuk mengetahui sejarah, tempat populer, dan estimasi harganya.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ IDENTITAS ================ -->
+  <section class="glass-card reveal" id="identitas">
+    <div class="section-head">
+      <h2>Identitas Kota Surabaya</h2>
+      <p>Mengenal lebih dekat ibu kota Provinsi Jawa Timur</p>
+    </div>
+
+    <div class="identity-grid" id="identityGrid"></div>
+    <p class="identity-text" id="identityNarasi"></p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ YOUTUBE VIDEO ================ -->
+  <section class="glass-card reveal">
+    <div class="section-head">
+      <h2>Video Sejarah Surabaya</h2>
+      <p>Kenali lebih dalam kota Surabaya lewat video berikut</p>
+    </div>
+    <div class="video-wrap">
+      <iframe id="ytEmbed" src="" title="Video Sejarah Surabaya"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="video-caption" id="ytCaption"></p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ MENGAPA SURABAYA KAYA KULINER ================ -->
+  <section class="glass-card reveal" id="mengapa">
+    <div class="section-head">
+      <h2>Mengapa Surabaya Kaya Kuliner</h2>
+      <p>Akar sejarah keberagaman cita rasa Kota Pahlawan</p>
+    </div>
+    <p class="why-text" id="whyText"></p>
+    <div class="why-pillars">
+      <div class="pillar"><strong>Pelabuhan</strong>Tanjung Perak sejak abad ke-13</div>
+      <div class="pillar"><strong>Tionghoa</strong>Kawasan Pasar Atom &amp; pecinan</div>
+      <div class="pillar"><strong>Madura</strong>Pengaruh sate &amp; bebek</div>
+      <div class="pillar"><strong>Belanda</strong>Heritage es krim &amp; kue lapis</div>
+      <div class="pillar"><strong>Arab</strong>Kawasan Ampel &amp; rempah</div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ PETA ================ -->
+  <section class="glass-card reveal" id="peta">
+    <div class="section-head">
+      <h2>Peta Wilayah Surabaya</h2>
+      <p>Klik salah satu wilayah untuk melihat makanan khasnya</p>
+    </div>
+
+    <div class="map-wrapper">
+      <svg class="map-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- Selat Madura labels -->
+        <text class="water-label" x="320" y="38">~ Selat Madura ~</text>
+        <text class="water-label" x="755" y="350" transform="rotate(90 755 350)" font-size="10">Pantai Kenjeran</text>
+
+        <!-- Pulau Madura kecil -->
+        <path d="M 660,5 Q 720,0 800,5 L 800,55 Q 720,60 660,50 Z"
+              fill="rgba(0, 210, 255, 0.07)" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1"/>
+        <text class="water-label" x="710" y="35" font-style="normal" font-size="10">MADURA</text>
+
+        <!-- Jembatan Suramadu -->
+        <line x1="600" y1="115" x2="685" y2="55" stroke="var(--accent-gold)" stroke-width="2" stroke-dasharray="4,3"/>
+        <circle cx="600" cy="115" r="3" fill="var(--accent-gold)"/>
+        <circle cx="685" cy="55" r="3" fill="var(--accent-gold)"/>
+        <text class="water-label" x="600" y="92" font-size="9">Jembatan Suramadu</text>
+
+        <!-- ============ WILAYAH (mengikuti garis batas asli, lebih flowing) ============ -->
+
+        <!-- SURABAYA UTARA -->
+        <path class="region r-utara" data-region="utara"
+              d="M 95,115 Q 130,100 175,108 Q 220,90 270,105 Q 320,85 370,100 Q 420,82 470,98 Q 520,82 565,108 Q 590,135 605,180
+                 Q 595,210 545,215 L 470,210 L 395,205 L 320,200 L 245,200 L 175,195 L 115,180 Z"/>
+        <text class="region-label" x="350" y="158">SURABAYA UTARA</text>
+        <text class="region-sublabel" x="350" y="174">Tanjung Perak · Kenjeran</text>
+
+        <!-- SURABAYA BARAT -->
+        <path class="region r-barat" data-region="barat"
+              d="M 115,180 L 175,195 L 245,200 L 250,275 L 245,355 L 230,425 L 200,470 L 150,485 L 100,490 L 75,460 L 60,400 L 50,330 L 48,260 L 55,200 L 75,145 Z"/>
+        <text class="region-label" x="150" y="305">SURABAYA</text>
+        <text class="region-label" x="150" y="324">BARAT</text>
+        <text class="region-sublabel" x="150" y="343">Pakuwon · Tandes</text>
+
+        <!-- SURABAYA PUSAT -->
+        <path class="region r-pusat" data-region="pusat"
+              d="M 245,200 L 320,200 L 395,205 L 470,210 L 478,290 L 470,355 L 395,365 L 320,360 L 250,355 L 250,275 Z"/>
+        <text class="region-label" x="365" y="285">SURABAYA</text>
+        <text class="region-label" x="365" y="304">PUSAT</text>
+        <text class="region-sublabel" x="365" y="322">Tunjungan · Genteng</text>
+
+        <!-- SURABAYA TIMUR -->
+        <path class="region r-timur" data-region="timur"
+              d="M 470,210 L 545,215 Q 595,210 605,180 L 625,225 L 650,275 L 675,325 L 695,380 L 695,435 L 675,470 L 640,495 L 600,510 L 555,510 L 510,500 L 478,475 L 470,415 L 466,360 L 470,290 Z"/>
+        <text class="region-label" x="575" y="335">SURABAYA</text>
+        <text class="region-label" x="575" y="354">TIMUR</text>
+        <text class="region-sublabel" x="575" y="372">Mulyorejo · Sukolilo</text>
+
+        <!-- SURABAYA SELATAN -->
+        <path class="region r-selatan" data-region="selatan"
+              d="M 250,355 L 320,360 L 395,365 L 470,355 L 478,475 L 510,500 L 555,510 L 510,530 L 440,540 L 365,548 L 290,550 L 230,560 L 195,545 L 150,535 L 110,520 L 100,490 L 150,485 L 200,470 L 230,425 L 245,355 Z"/>
+        <text class="region-label" x="335" y="450">SURABAYA SELATAN</text>
+        <text class="region-sublabel" x="335" y="468">Wonokromo · Karangpilang</text>
+
+        <!-- Batas tetangga -->
+        <text class="water-label" x="48" y="350" transform="rotate(-90 48 350)" font-style="normal" font-size="9">Kab. Gresik</text>
+        <text class="water-label" x="320" y="585" font-style="normal" font-size="9">Kab. Sidoarjo</text>
+
+        <!-- ============ LANDMARK (cuma 3 yang tersisa, hindari tabrakan) ============ -->
+        <!-- Tugu Pahlawan (di Pusat, kecil di kanan atas region) -->
+        <g class="landmark">
+          <rect x="297" y="232" width="6" height="26" fill="var(--accent-gold)"/>
+          <polygon points="300,225 295,234 305,234" fill="var(--accent-gold)"/>
+          <rect x="294" y="258" width="12" height="3" fill="var(--accent-gold)"/>
+          <text x="300" y="273">Tugu Pahlawan</text>
+        </g>
+
+        <!-- Monumen Kapal Selam (di Pusat, kanan bawah region) -->
+        <g class="landmark">
+          <ellipse cx="430" cy="335" rx="11" ry="3.5" fill="#94a3b8"/>
+          <rect x="428" y="330" width="4" height="5" fill="#94a3b8"/>
+          <text x="430" y="350">Monumen Kapal Selam</text>
+        </g>
+
+        <!-- Patung Sura & Baya (di Pusat dekat KBS) -->
+        <g class="landmark">
+          <path d="M 425,395 Q 432,388 440,395 Q 446,400 452,395" fill="none" stroke="var(--accent-red)" stroke-width="1.6"/>
+          <circle cx="430" cy="392" r="1.4" fill="var(--accent-red)"/>
+          <circle cx="446" cy="392" r="1.4" fill="var(--accent-red)"/>
+          <text x="438" y="412">Patung Sura &amp; Baya</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="map-legend">
+      <div class="legend-item" data-region="utara"><span class="legend-color" style="background:var(--primary)"></span>Surabaya Utara</div>
+      <div class="legend-item" data-region="barat"><span class="legend-color" style="background:var(--accent-purple)"></span>Surabaya Barat</div>
+      <div class="legend-item" data-region="pusat"><span class="legend-color" style="background:var(--accent-gold)"></span>Surabaya Pusat</div>
+      <div class="legend-item" data-region="timur"><span class="legend-color" style="background:var(--accent-green)"></span>Surabaya Timur</div>
+      <div class="legend-item" data-region="selatan"><span class="legend-color" style="background:var(--accent-red)"></span>Surabaya Selatan</div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ DAFTAR KULINER ================ -->
+  <section class="glass-card reveal" id="kuliner">
+    <div class="section-head">
+      <h2>Daftar Kuliner Khas</h2>
+      <p>Klik kartu untuk melihat sejarah, lokasi, dan harga</p>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Cari nama makanan atau tempat...">
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Semua</button>
+      <button class="filter-btn" data-filter="utara">Utara</button>
+      <button class="filter-btn" data-filter="pusat">Pusat</button>
+      <button class="filter-btn" data-filter="timur">Timur</button>
+      <button class="filter-btn" data-filter="barat">Barat</button>
+      <button class="filter-btn" data-filter="selatan">Selatan</button>
+      <button class="filter-btn" data-filter="legendaris">Legendaris</button>
+      <button class="filter-btn" data-filter="kekinian">Kekinian</button>
+    </div>
+
+    <div class="food-grid" id="food-grid"></div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ================ FORM SARAN ================ -->
+  <section class="glass-card form-section reveal" id="saran">
+    <div class="section-head">
+      <h2>Saran &amp; Rekomendasi Tempat</h2>
+      <p>Punya rekomendasi tempat kuliner di Surabaya yang belum tercantum? Kirim ke kami!</p>
+    </div>
+
+    <form id="recommendForm" onsubmit="return false;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="rNama">Nama Anda</label>
+          <input type="text" id="rNama" placeholder="Misal: Andi Pratama" required>
+        </div>
+        <div class="form-group">
+          <label for="rWilayah">Wilayah</label>
+          <select id="rWilayah" required>
+            <option value="">Pilih wilayah...</option>
+            <option>Surabaya Utara</option>
+            <option>Surabaya Pusat</option>
+            <option>Surabaya Timur</option>
+            <option>Surabaya Barat</option>
+            <option>Surabaya Selatan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rMakanan">Nama Makanan / Tempat</label>
+          <input type="text" id="rMakanan" placeholder="Misal: Nasi Bebek Cak Yudi" required>
+        </div>
+        <div class="form-group">
+          <label for="rAlamat">Alamat Tempat</label>
+          <input type="text" id="rAlamat" placeholder="Jl. Contoh No. 12, Surabaya" required>
+        </div>
+        <div class="form-group full">
+          <label for="rPesan">Alasan Rekomendasi</label>
+          <textarea id="rPesan" placeholder="Cerita singkat kenapa tempat ini direkomendasikan..." required></textarea>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button type="button" class="btn btn-wa" onclick="kirimRekomendasi('wa')">Kirim via WhatsApp</button>
+        <button type="button" class="btn btn-email" onclick="kirimRekomendasi('email')">Kirim via Email</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================ FOOTER ================ -->
+  <footer class="reveal">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Smart Culinary Surabaya</h3>
+        <p>Smart City Dashboard untuk pemetaan kuliner khas Kota Pahlawan. Dibuat sebagai tugas Mata Pelajaran TIK / Informatika untuk mengenalkan kekayaan kuliner Surabaya kepada masyarakat luas.</p>
+      </div>
+      <div class="footer-credits" id="footerCredits">
+        <h4>Kredit Pembuat</h4>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Dibuat dengan <span class="heart">♥</span> untuk Kota Pahlawan · Smart Culinary Surabaya © 2026</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" aria-label="Kembali ke atas">↑</button>
+
+<!-- ================ MODAL ================ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose" aria-label="Tutup">&times;</button>
+      <div class="modal-emoji" id="modalEmoji">🍲</div>
+      <div class="modal-region-badge" id="modalRegion">Wilayah</div>
+      <h3 class="modal-title" id="modalTitle">Nama Makanan</h3>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-label">Sejarah Singkat</div>
+        <p id="modalHistory">-</p>
+      </div>
+      <div class="modal-info-grid">
+        <div class="modal-info-card">
+          <div class="label">Estimasi Harga</div>
+          <div class="value" id="modalPrice">-</div>
+        </div>
+        <div class="modal-info-card">
+          <div class="label">Kategori</div>
+          <div class="value" id="modalCategory">-</div>
+        </div>
+      </div>
+      <div class="modal-section" style="margin-top:18px;">
+        <div class="modal-section-label">3 Tempat Populer</div>
+        <div class="place-list" id="modalPlaces"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Load shared data -->
+<script src="data.js"></script>
+
+<script>
+  /* =========================================================
+     GANTI KONTAK DI BAWAH INI (WhatsApp & Email)
+     Format WA: 62xxxxxxxxxx (tanpa tanda +)
+  ========================================================= */
+  const KONTAK = {
+    whatsapp: "6281234567890",
+    email:    "kontak@smartculinary.id"
+  };
+
+  /* =========================================================
+     RENDER KONTEN DARI DATA
+  ========================================================= */
+  const D = window.SC_DATA;
+
+  // Identitas
+  const idGrid = document.getElementById('identityGrid');
+  const idItems = [
+    { icon: '📅', value: D.identitas.hariJadi, label: 'Hari Jadi' },
+    { icon: '🏛️', value: D.identitas.julukan,  label: 'Julukan' },
+    { icon: '👥', value: D.identitas.penduduk, label: 'Penduduk' },
+    { icon: '📐', value: D.identitas.luas,     label: 'Luas Wilayah' },
+    { icon: '🌊', value: D.identitas.pesisir,  label: 'Pesisir' },
+  ];
+  idGrid.innerHTML = idItems.map(it =>
+    `<div class="identity-item">
+      <div class="identity-icon">${it.icon}</div>
+      <div class="identity-value">${it.value}</div>
+      <div class="identity-label">${it.label}</div>
+    </div>`
+  ).join('');
+  document.getElementById('identityNarasi').textContent = D.identitas.narasi;
+
+  // YouTube
+  const ytId = D.youtube.id;
+  document.getElementById('ytEmbed').src = `https://www.youtube.com/embed/${ytId}`;
+  document.getElementById('ytCaption').textContent = D.youtube.title;
+
+  // Why
+  document.getElementById('whyText').textContent = D.whyCulinary;
+
+  // Footer credits
+  const fc = document.getElementById('footerCredits');
+  fc.innerHTML = '<h4>Kredit Pembuat</h4>' +
+    `<div class="row"><strong>Kelompok:</strong> ${D.footer.kelompok}</div>` +
+    `<div class="row"><strong>Anggota:</strong>\n${D.footer.anggota}</div>` +
+    `<div class="row"><strong>Kelas:</strong> ${D.footer.kelas}</div>` +
+    `<div class="row"><strong>Sekolah:</strong> ${D.footer.sekolah}</div>` +
+    `<div class="row"><strong>Mata Pel:</strong> ${D.footer.mapel}</div>` +
+    `<div class="row"><strong>T.A:</strong> ${D.footer.tahun}</div>`;
+
+  /* =========================================================
+     FOOD GRID
+  ========================================================= */
+  const foodGrid = document.getElementById('food-grid');
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  function renderFoods() {
+    foodGrid.innerHTML = '';
+    let list = D.culinary;
+    if (currentFilter !== 'all') {
+      list = list.filter(f => f.region === currentFilter || f.tag === currentFilter);
+    }
+    if (currentSearch) {
+      const q = currentSearch.toLowerCase();
+      list = list.filter(f =>
+        f.name.toLowerCase().includes(q) ||
+        f.category.toLowerCase().includes(q) ||
+        f.places.some(p => p.name.toLowerCase().includes(q))
+      );
+    }
+    if (list.length === 0) {
+      foodGrid.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:30px;">Tidak ada makanan yang cocok.</p>';
+      return;
+    }
+    list.forEach((f, i) => {
+      const card = document.createElement('div');
+      card.className = 'food-card';
+      card.style.animation = `slideUp 0.4s ease ${i * 0.04}s backwards`;
+      const tagBadge = f.tag === 'legendaris' ? '<span class="food-tag legendaris">LEGEND</span>'
+                     : f.tag === 'kekinian'   ? '<span class="food-tag kekinian">KEKINIAN</span>'
+                     : '';
+      card.innerHTML = `
+        ${tagBadge}
+        <div class="food-emoji">${f.emoji}</div>
+        <span class="food-region">${f.regionLabel}</span>
+        <h3>${f.name}</h3>
+        <div class="food-price">${f.price}</div>
+      `;
+      card.addEventListener('click', () => openModal(f.id));
+      foodGrid.appendChild(card);
+    });
+  }
+  renderFoods();
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-filter');
+      renderFoods();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    currentSearch = e.target.value.trim();
+    renderFoods();
+  });
+
+  /* =========================================================
+     MODAL
+  ========================================================= */
+  const modal = document.getElementById('modal');
+  function openModal(id) {
+    const f = D.culinary.find(x => x.id === id);
+    if (!f) return;
+    document.getElementById('modalRegion').textContent = f.regionLabel;
+    document.getElementById('modalTitle').textContent = f.name;
+    document.getElementById('modalEmoji').textContent = f.emoji;
+    document.getElementById('modalHistory').textContent = f.history;
+    document.getElementById('modalPrice').textContent = f.price;
+    document.getElementById('modalCategory').textContent = f.category;
+
+    const placesEl = document.getElementById('modalPlaces');
+    placesEl.innerHTML = '';
+    f.places.forEach(p => {
+      const mapsQuery = encodeURIComponent(p.name + ' ' + p.addr);
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+      const div = document.createElement('div');
+      div.className = 'place-card';
+      div.innerHTML = `
+        <div class="place-name">${p.name}</div>
+        <div class="place-addr">📍 ${p.addr}</div>
+        <div class="place-meta">${p.meta}</div>
+        <a href="${mapsUrl}" target="_blank" rel="noopener" class="maps-link">🗺️ Buka di Google Maps</a>
+      `;
+      placesEl.appendChild(div);
+    });
+
+    document.querySelectorAll('.region').forEach(r => r.classList.remove('active'));
+    const target = document.querySelector(`.region[data-region="${f.region}"]`);
+    if (target) target.classList.add('active');
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.region').forEach(r => r.classList.remove('active'));
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* =========================================================
+     KLIK WILAYAH PETA → FILTER & SCROLL
+  ========================================================= */
+  function filterByRegion(key) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.filter-btn[data-filter="${key}"]`);
+    if (btn) btn.classList.add('active');
+    currentFilter = key;
+    renderFoods();
+    document.querySelectorAll('.region').forEach(r => r.classList.remove('active'));
+    const target = document.querySelector(`.region[data-region="${key}"]`);
+    if (target) target.classList.add('active');
+    setTimeout(() => {
+      const section = document.getElementById('kuliner');
+      if (section) {
+        const navHeight = document.getElementById('topNav').offsetHeight + 24;
+        const top = section.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 80);
+  }
+  document.querySelectorAll('.region').forEach(region => {
+    region.addEventListener('click', () => filterByRegion(region.getAttribute('data-region')));
+  });
+  document.querySelectorAll('.legend-item').forEach(item => {
+    item.addEventListener('click', () => filterByRegion(item.getAttribute('data-region')));
+  });
+
+  /* =========================================================
+     LIVE CLOCK
+  ========================================================= */
+  function updateClock() {
+    const now = new Date();
+    const t = now.toLocaleTimeString('id-ID', { hour12: false });
+    const d = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+    document.getElementById('datetime').textContent = `${d} · ${t}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* =========================================================
+     KIRIM REKOMENDASI
+  ========================================================= */
+  function kirimRekomendasi(via) {
+    const nama    = document.getElementById('rNama').value.trim();
+    const wilayah = document.getElementById('rWilayah').value.trim();
+    const makanan = document.getElementById('rMakanan').value.trim();
+    const alamat  = document.getElementById('rAlamat').value.trim();
+    const pesan   = document.getElementById('rPesan').value.trim();
+    if (!nama || !wilayah || !makanan || !alamat || !pesan) {
+      alert('Mohon lengkapi semua kolom terlebih dahulu ya 🙏');
+      return;
+    }
+    const teks =
+      'Halo Smart Culinary Surabaya 👋\n\nSaya ingin merekomendasikan tempat kuliner:\n\n' +
+      '👤 Nama: ' + nama + '\n📍 Wilayah: ' + wilayah + '\n🍴 Nama Makanan/Tempat: ' + makanan +
+      '\n🏠 Alamat: ' + alamat + '\n\n📝 Alasan rekomendasi:\n' + pesan + '\n\nTerima kasih!';
+    if (via === 'wa') {
+      window.open(`https://wa.me/${KONTAK.whatsapp}?text=${encodeURIComponent(teks)}`, '_blank');
+    } else if (via === 'email') {
+      window.location.href = `mailto:${KONTAK.email}?subject=${encodeURIComponent('Rekomendasi Kuliner: ' + makanan)}&body=${encodeURIComponent(teks)}`;
+    }
+  }
+  window.kirimRekomendasi = kirimRekomendasi;
+
+  /* =========================================================
+     LOADING SCREEN + FADE-IN
+  ========================================================= */
+  const loaderPercent = document.getElementById('loaderPercent');
+  let loadProg = 0;
+  const loadInt = setInterval(() => {
+    loadProg += Math.random() * 15;
+    if (loadProg >= 100) { loadProg = 100; clearInterval(loadInt); }
+    loaderPercent.textContent = Math.round(loadProg) + '%';
+  }, 80);
+
+  function hideLoader() {
+    document.getElementById('loader').classList.add('hidden');
+    revealElements();
+  }
+  if (document.readyState === 'complete') setTimeout(hideLoader, 1500);
+  else window.addEventListener('load', () => setTimeout(hideLoader, 1500));
+
+  function revealElements() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  /* =========================================================
+     NAV: mobile toggle, active highlight, back-to-top
+  ========================================================= */
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navMenu').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navMenu').classList.remove('open');
+    });
+  });
+
+  // Active link berdasarkan scroll
+  const sections = ['beranda','identitas','mengapa','peta','kuliner','saran'];
+  function updateActiveNav() {
+    let current = 'beranda';
+    const scrollPos = window.scrollY + 140;
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollPos) current = id;
+    }
+    document.querySelectorAll('.nav-link').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav);
+
+  // Back to top
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 500);
+  });
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Tambah keyframe slideUp untuk food card
+  const styleSheet = document.styleSheets[0];
+  styleSheet.insertRule(`@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`, styleSheet.cssRules.length);
+</script>
+
+</body>
+</html>
