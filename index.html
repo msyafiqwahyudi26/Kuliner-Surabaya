@@ -9,14 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* =========================================================
-     SMART CULINARY SURABAYA - LANDING PAGE
-     File: index.html
-     Tugas TIK · HTML + CSS + Vanilla JS
+     SMART CULINARY SURABAYA - SINGLE FILE EDITION
+     File: index.html (landing + admin terintegrasi)
 
-     UBAH NOMOR WHATSAPP/EMAIL: cari "GANTI KONTAK" di JS
-     UBAH PASSWORD ADMIN: lihat file admin.html
-     UBAH DATA KULINER: lihat file data.js atau buka admin.html
-  ========================================================= */
+     >>> GANTI PASSWORD ADMIN: cari "ADMIN_PASSWORD" di JS
+     >>> GANTI KONTAK WA/EMAIL: cari "KONTAK" di JS
+     ========================================================= */
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -47,9 +45,7 @@
 
   body::before {
     content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -2;
+    position: fixed; inset: 0; z-index: -2;
     background:
       radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.14), transparent 45%),
       radial-gradient(circle at 85% 30%, rgba(255, 77, 109, 0.08), transparent 45%),
@@ -64,14 +60,14 @@
     background-size: 70px 70px;
   }
 
-  /* ============== LOADING SCREEN ============== */
+  /* ============== LOADING ============== */
   #loader {
     position: fixed; inset: 0;
     background: var(--bg-deep);
     z-index: 9999;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 24px;
+    gap: 22px;
     transition: opacity 0.6s ease, visibility 0.6s ease;
   }
   #loader.hidden { opacity: 0; visibility: hidden; }
@@ -86,7 +82,7 @@
   }
   .loader-title {
     font-weight: 700;
-    font-size: 0.98rem;
+    font-size: 0.96rem;
     letter-spacing: 1.5px;
     color: var(--primary);
   }
@@ -112,7 +108,7 @@
     letter-spacing: 1px;
   }
 
-  /* ============== REVEAL ON SCROLL ============== */
+  /* ============== REVEAL ============== */
   .reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -120,7 +116,7 @@
   }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ============== STICKY NAV HEADER ============== */
+  /* ============== STICKY NAV ============== */
   .top-nav {
     position: fixed;
     top: 14px;
@@ -140,14 +136,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    transition: all 0.3s ease;
   }
 
   .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
     flex-shrink: 0;
+    color: inherit; text-decoration: none;
   }
   .nav-shield {
     width: 36px; height: 40px;
@@ -155,68 +149,41 @@
     transition: transform 0.3s ease;
   }
   .nav-brand:hover .nav-shield { transform: scale(1.06); }
-  .nav-brand-text {
-    line-height: 1.1;
-  }
+  .nav-brand-text { line-height: 1.1; }
   .nav-brand-text strong {
-    font-size: 0.95rem;
-    color: #fff;
-    font-weight: 700;
-    display: block;
+    font-size: 0.95rem; color: #fff; font-weight: 700; display: block;
   }
   .nav-brand-text span {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
+    font-size: 0.65rem; color: var(--text-muted);
+    letter-spacing: 0.6px; text-transform: uppercase;
   }
 
   .nav-menu {
-    display: flex;
-    gap: 2px;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
+    display: flex; gap: 2px; align-items: center;
+    flex: 1; justify-content: center;
   }
   .nav-menu a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 7px 14px;
-    border-radius: 8px;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 7px 14px; border-radius: 8px;
     transition: all 0.25s ease;
   }
-  .nav-menu a:hover {
-    color: #fff;
-    background: rgba(0, 210, 255, 0.1);
-  }
-  .nav-menu a.active {
-    color: var(--primary);
-    background: rgba(0, 210, 255, 0.12);
-  }
+  .nav-menu a:hover { color: #fff; background: rgba(0, 210, 255, 0.1); }
+  .nav-menu a.active { color: var(--primary); background: rgba(0, 210, 255, 0.12); }
 
   .nav-side {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+    display: flex; gap: 8px; align-items: center;
   }
   .nav-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    display: flex; align-items: center; gap: 6px;
     padding: 6px 12px;
     background: rgba(0, 210, 255, 0.06);
     border: 1px solid var(--glass-border);
     border-radius: 18px;
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    font-weight: 500;
+    font-size: 0.74rem; color: var(--text-muted); font-weight: 500;
   }
   .nav-pill #datetime {
-    color: #fff;
-    font-variant-numeric: tabular-nums;
-    font-size: 0.72rem;
+    color: #fff; font-variant-numeric: tabular-nums; font-size: 0.72rem;
   }
   .live-dot {
     width: 7px; height: 7px;
@@ -229,34 +196,24 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(1.3); }
   }
-
-  /* Mobile nav toggle */
   .nav-toggle {
     display: none;
     background: none;
     border: 1px solid var(--glass-border);
     color: #fff;
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 8px;
     cursor: pointer;
-    align-items: center;
-    justify-content: center;
   }
 
   /* ============== LAYOUT ============== */
   .container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 96px 20px 24px; /* top padding kasih ruang sticky nav */
+    padding: 96px 20px 24px;
   }
 
-  /* ============== HERO ============== */
-  .hero {
-    text-align: center;
-    padding: 30px 20px 40px;
-  }
-
+  .hero { text-align: center; padding: 30px 20px 40px; }
   .hero-tag {
     display: inline-block;
     padding: 6px 14px;
@@ -269,13 +226,10 @@
     letter-spacing: 1.2px;
     text-transform: uppercase;
   }
-
   .hero h1 {
     font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 800;
-    line-height: 1.18;
-    margin-bottom: 12px;
-    color: #fff;
+    font-weight: 800; line-height: 1.18;
+    margin-bottom: 12px; color: #fff;
   }
   .hero h1 .accent {
     background: linear-gradient(135deg, var(--primary), #6df0ff);
@@ -285,23 +239,17 @@
   }
   .hero p {
     color: var(--text-muted);
-    max-width: 640px;
-    margin: 0 auto;
-    line-height: 1.65;
-    font-size: 0.96rem;
+    max-width: 640px; margin: 0 auto;
+    line-height: 1.65; font-size: 0.96rem;
   }
 
-  /* ============== SECTION DIVIDER (LEBIH MINIMALIS) ============== */
   .section-divider {
-    width: 80px;
-    height: 2px;
+    width: 80px; height: 2px;
     background: linear-gradient(90deg, transparent, var(--primary), transparent);
     margin: 30px auto;
-    opacity: 0.5;
-    border-radius: 2px;
+    opacity: 0.5; border-radius: 2px;
   }
 
-  /* ============== GLASS CARD ============== */
   .glass-card {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -315,51 +263,36 @@
     overflow: hidden;
   }
   .glass-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
+    content: ""; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
     background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.4), transparent);
   }
 
-  .section-head {
-    margin-bottom: 22px;
-  }
+  .section-head { margin-bottom: 22px; }
   .section-head h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-size: 1.3rem; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 12px;
   }
   .section-head h2::before {
-    content: "";
-    width: 4px;
-    height: 22px;
-    background: var(--primary);
-    border-radius: 2px;
+    content: ""; width: 4px; height: 22px;
+    background: var(--primary); border-radius: 2px;
   }
   .section-head p {
-    color: var(--text-muted);
-    font-size: 0.92rem;
-    margin-top: 6px;
-    margin-left: 16px;
+    color: var(--text-muted); font-size: 0.92rem;
+    margin-top: 6px; margin-left: 16px;
   }
 
   /* ============== IDENTITAS ============== */
   .identity-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: 12px; margin-bottom: 18px;
   }
   .identity-item {
     padding: 16px 14px;
     background: rgba(0, 210, 255, 0.04);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    text-align: center;
+    border-radius: 12px; text-align: center;
     transition: all 0.3s ease;
   }
   .identity-item:hover {
@@ -367,31 +300,20 @@
     border-color: rgba(0, 210, 255, 0.4);
     transform: translateY(-2px);
   }
-  .identity-icon {
-    font-size: 1.6rem;
-    margin-bottom: 4px;
-    opacity: 0.9;
-  }
+  .identity-icon { font-size: 1.6rem; margin-bottom: 4px; opacity: 0.9; }
   .identity-value {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--primary);
+    font-size: 1.05rem; font-weight: 700; color: var(--primary);
   }
   .identity-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-top: 2px;
+    font-size: 0.7rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px;
   }
   .identity-text {
-    color: var(--text-muted);
-    line-height: 1.7;
-    font-size: 0.94rem;
+    color: var(--text-muted); line-height: 1.7; font-size: 0.94rem;
   }
   .identity-text strong { color: #fff; }
 
-  /* ============== YOUTUBE EMBED ============== */
+  /* ============== YOUTUBE ============== */
   .video-wrap {
     position: relative;
     aspect-ratio: 16 / 9;
@@ -400,72 +322,72 @@
     overflow: hidden;
     border: 1px solid var(--glass-border);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    background: #000;
   }
   .video-wrap iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
+    width: 100%; height: 100%; border: 0; display: block;
   }
-  .video-caption {
+  .video-fallback {
     text-align: center;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-top: 10px;
-    font-style: italic;
+    margin-top: 12px;
+  }
+  .video-fallback a {
+    display: inline-flex;
+    align-items: center; gap: 8px;
+    padding: 9px 18px;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: transform 0.25s ease;
+  }
+  .video-fallback a:hover { transform: translateY(-2px); }
+  .video-caption {
+    text-align: center; color: var(--text-muted);
+    font-size: 0.85rem; margin-top: 10px; font-style: italic;
   }
 
-  /* ============== WHY CULINARY ============== */
+  /* ============== MENGAPA ============== */
   .why-text {
-    color: #d2dcef;
-    line-height: 1.75;
-    font-size: 0.96rem;
+    color: #d2dcef; line-height: 1.75; font-size: 0.96rem;
   }
   .why-pillars {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-top: 20px;
+    gap: 10px; margin-top: 20px;
   }
   .pillar {
     padding: 12px;
     background: rgba(0, 210, 255, 0.05);
     border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    text-align: center;
-    font-size: 0.82rem;
-    color: var(--text-muted);
+    border-radius: 10px; text-align: center;
+    font-size: 0.82rem; color: var(--text-muted);
   }
   .pillar strong {
-    display: block;
-    color: var(--primary);
-    margin-bottom: 2px;
-    font-weight: 700;
+    display: block; color: var(--primary);
+    margin-bottom: 2px; font-weight: 700;
   }
 
   /* ============== PETA ============== */
   .map-wrapper {
-    position: relative;
-    width: 100%;
+    position: relative; width: 100%;
     aspect-ratio: 4 / 3;
     max-height: 580px;
-    margin: 0 auto;
-    max-width: 880px;
+    margin: 0 auto; max-width: 880px;
   }
-  .map-svg {
-    width: 100%;
-    height: 100%;
-  }
+  .map-svg { width: 100%; height: 100%; }
   .region {
     cursor: pointer;
     stroke-width: 1.8;
     transition: filter 0.3s ease, stroke-width 0.3s ease;
   }
-  .region.r-utara   { fill: rgba(0, 210, 255, 0.13);   stroke: var(--primary); }
-  .region.r-pusat   { fill: rgba(255, 210, 77, 0.16);  stroke: var(--accent-gold); }
-  .region.r-timur   { fill: rgba(74, 222, 128, 0.13);  stroke: var(--accent-green); }
-  .region.r-selatan { fill: rgba(255, 77, 109, 0.13);  stroke: var(--accent-red); }
-  .region.r-barat   { fill: rgba(192, 132, 252, 0.13); stroke: var(--accent-purple); }
+  .region.r-utara   { fill: rgba(74, 222, 128, 0.18);   stroke: var(--accent-green); }
+  .region.r-pusat   { fill: rgba(255, 159, 64, 0.20);   stroke: #ff9f40; }
+  .region.r-timur   { fill: rgba(0, 210, 255, 0.16);    stroke: var(--primary); }
+  .region.r-selatan { fill: rgba(255, 235, 100, 0.16);  stroke: #ffeb64; }
+  .region.r-barat   { fill: rgba(232, 92, 165, 0.18);   stroke: #e85ca5; }
   .region:hover {
     filter: brightness(1.4);
     stroke-width: 2.6;
@@ -477,107 +399,49 @@
   .region-label {
     fill: #fff;
     font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    pointer-events: none;
-    text-anchor: middle;
+    font-weight: 700; font-size: 13px;
+    pointer-events: none; text-anchor: middle;
     paint-order: stroke;
     stroke: rgba(5, 11, 24, 0.9);
     stroke-width: 3px;
   }
   .region-sublabel {
-    fill: rgba(255,255,255,0.6);
-    font-size: 9px;
-    pointer-events: none;
-    text-anchor: middle;
-    font-weight: 500;
-    paint-order: stroke;
-    stroke: rgba(5, 11, 24, 0.9);
-    stroke-width: 2.5px;
+    fill: rgba(255,255,255,0.55);
+    font-size: 9px; pointer-events: none; text-anchor: middle;
+    font-weight: 500; paint-order: stroke;
+    stroke: rgba(5, 11, 24, 0.9); stroke-width: 2.5px;
   }
   .landmark { pointer-events: none; }
   .landmark text {
-    fill: #fff;
-    font-size: 9px;
-    font-weight: 600;
-    text-anchor: middle;
-    paint-order: stroke;
-    stroke: rgba(5, 11, 24, 0.9);
-    stroke-width: 2.5px;
+    fill: #fff; font-size: 9px; font-weight: 600;
+    text-anchor: middle; paint-order: stroke;
+    stroke: rgba(5, 11, 24, 0.9); stroke-width: 2.5px;
   }
   .water-label {
     fill: rgba(0, 210, 255, 0.5);
-    font-size: 11px;
-    font-style: italic;
-    pointer-events: none;
+    font-size: 11px; font-style: italic; pointer-events: none;
   }
 
   .map-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: flex; flex-wrap: wrap; gap: 8px;
     justify-content: center;
-    margin-top: 16px;
-    padding-top: 16px;
+    margin-top: 16px; padding-top: 16px;
     border-top: 1px dashed var(--glass-border);
   }
   .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+    display: flex; align-items: center; gap: 7px;
     padding: 7px 13px;
     background: rgba(0, 210, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: 18px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    color: var(--text-primary);
+    font-size: 0.8rem; cursor: pointer;
+    transition: all 0.25s ease; color: var(--text-primary);
   }
-  .legend-item:hover {
-    background: rgba(0, 210, 255, 0.14);
-    transform: translateY(-1px);
-  }
-  .legend-color {
-    width: 11px; height: 11px;
-    border-radius: 3px;
-  }
+  .legend-item:hover { background: rgba(0, 210, 255, 0.14); transform: translateY(-1px); }
+  .legend-color { width: 11px; height: 11px; border-radius: 3px; }
 
-  /* ============== FILTER BAR ============== */
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 18px;
-  }
-  .filter-btn {
-    padding: 7px 14px;
-    background: rgba(0, 210, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    color: var(--text-muted);
-    font-family: inherit;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-  .filter-btn:hover {
-    background: rgba(0, 210, 255, 0.14);
-    color: #fff;
-  }
-  .filter-btn.active {
-    background: var(--primary);
-    color: #051320;
-    border-color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* Search */
-  .search-wrap {
-    position: relative;
-    margin-bottom: 14px;
-  }
+  /* ============== FILTER + SEARCH ============== */
+  .search-wrap { position: relative; margin-bottom: 14px; }
   .search-wrap input {
     width: 100%;
     padding: 11px 14px 11px 38px;
@@ -585,30 +449,41 @@
     border: 1px solid var(--glass-border);
     border-radius: 10px;
     color: #fff;
-    font-family: inherit;
-    font-size: 0.92rem;
+    font-family: inherit; font-size: 0.92rem;
     transition: border-color 0.25s ease;
   }
-  .search-wrap input:focus {
-    outline: none;
-    border-color: var(--primary);
-  }
+  .search-wrap input:focus { outline: none; border-color: var(--primary); }
   .search-wrap::before {
     content: "🔍";
-    position: absolute;
-    left: 12px;
-    top: 50%;
+    position: absolute; left: 12px; top: 50%;
     transform: translateY(-50%);
-    font-size: 0.95rem;
-    opacity: 0.6;
+    font-size: 0.95rem; opacity: 0.6;
+  }
+
+  .filter-bar {
+    display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px;
+  }
+  .filter-btn {
+    padding: 7px 14px;
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    color: var(--text-muted);
+    font-family: inherit; font-size: 0.82rem; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .filter-btn:hover { background: rgba(0, 210, 255, 0.14); color: #fff; }
+  .filter-btn.active {
+    background: var(--primary); color: #051320;
+    border-color: var(--primary); font-weight: 600;
   }
 
   /* ============== FOOD GRID ============== */
   .food-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 14px;
-    min-height: 200px;
+    gap: 14px; min-height: 200px;
   }
   .food-card {
     background: rgba(0, 210, 255, 0.04);
@@ -617,19 +492,14 @@
     padding: 16px;
     cursor: pointer;
     transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .food-card:hover {
     transform: translateY(-3px);
     border-color: rgba(0, 210, 255, 0.5);
     background: rgba(0, 210, 255, 0.08);
   }
-  .food-card .food-emoji {
-    font-size: 2.2rem;
-    margin-bottom: 6px;
-    transition: transform 0.3s ease;
-  }
+  .food-card .food-emoji { font-size: 2.2rem; margin-bottom: 6px; transition: transform 0.3s ease; }
   .food-card:hover .food-emoji { transform: scale(1.08); }
   .food-card .food-region {
     display: inline-block;
@@ -637,46 +507,32 @@
     background: rgba(0, 210, 255, 0.15);
     color: var(--primary);
     border-radius: 8px;
-    font-size: 0.66rem;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
+    font-size: 0.66rem; margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
   }
   .food-card h3 {
-    font-size: 0.98rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: #fff;
-    line-height: 1.3;
+    font-size: 0.98rem; font-weight: 700;
+    margin-bottom: 4px; color: #fff; line-height: 1.3;
   }
   .food-card .food-price {
-    color: var(--accent-gold);
-    font-weight: 600;
-    font-size: 0.82rem;
+    color: var(--accent-gold); font-weight: 600; font-size: 0.82rem;
   }
   .food-card .food-tag {
-    position: absolute;
-    top: 10px; right: 10px;
-    padding: 2px 7px;
-    border-radius: 7px;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
+    position: absolute; top: 10px; right: 10px;
+    padding: 2px 7px; border-radius: 7px;
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.3px;
   }
   .food-card .food-tag.legendaris { background: var(--accent-gold); color: #2a1500; }
   .food-card .food-tag.kekinian   { background: var(--accent-purple); color: #fff; }
 
-  /* ============== MODAL ============== */
+  /* ============== MODAL DETAIL MAKANAN ============== */
   .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(5, 11, 24, 0.78);
     backdrop-filter: blur(8px);
     display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    padding: 18px;
+    align-items: center; justify-content: center;
+    z-index: 200; padding: 18px;
     animation: fadeIn 0.25s ease;
   }
   .modal-overlay.active { display: flex; }
@@ -687,9 +543,7 @@
     border: 1px solid var(--glass-border);
     border-radius: 18px;
     width: 100%;
-    max-width: 620px;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-width: 620px; max-height: 90vh; overflow-y: auto;
     box-shadow: 0 24px 60px rgba(0,0,0,0.55);
     animation: slideUp 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
     position: relative;
@@ -701,64 +555,41 @@
   .modal-header {
     padding: 26px 28px 16px;
     border-bottom: 1px solid var(--glass-border);
-    text-align: center;
-    position: relative;
+    text-align: center; position: relative;
   }
   .modal-emoji { font-size: 3rem; margin-bottom: 6px; }
   .modal-region-badge {
-    display: inline-block;
-    padding: 3px 10px;
+    display: inline-block; padding: 3px 10px;
     background: rgba(0, 210, 255, 0.15);
-    color: var(--primary);
-    border-radius: 10px;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    font-weight: 600;
+    color: var(--primary); border-radius: 10px;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 6px; font-weight: 600;
   }
-  .modal-title {
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: #fff;
-  }
+  .modal-title { font-size: 1.45rem; font-weight: 800; color: #fff; }
   .modal-close {
-    position: absolute;
-    top: 12px; right: 12px;
+    position: absolute; top: 12px; right: 12px;
     width: 34px; height: 34px;
     border: 1px solid var(--glass-border);
     background: rgba(255,255,255,0.05);
     color: #fff;
     border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.1rem;
+    cursor: pointer; font-size: 1.1rem;
     display: grid; place-items: center;
     transition: all 0.25s ease;
   }
-  .modal-close:hover {
-    background: rgba(255, 77, 109, 0.2);
-    transform: rotate(90deg);
-  }
+  .modal-close:hover { background: rgba(255, 77, 109, 0.2); transform: rotate(90deg); }
   .modal-body { padding: 22px 28px 26px; }
   .modal-section { margin-bottom: 18px; }
   .modal-section:last-child { margin-bottom: 0; }
   .modal-section-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 1.1px;
-    color: var(--primary);
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.1px;
+    color: var(--primary); font-weight: 700; margin-bottom: 8px;
   }
   .modal-section p {
-    color: #d2dcef;
-    font-size: 0.92rem;
-    line-height: 1.65;
+    color: #d2dcef; font-size: 0.92rem; line-height: 1.65;
   }
   .modal-info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
   }
   .modal-info-card {
     padding: 12px 14px;
@@ -767,22 +598,13 @@
     border-radius: 10px;
   }
   .modal-info-card .label {
-    font-size: 0.68rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 3px;
+    font-size: 0.68rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px;
   }
   .modal-info-card .value {
-    color: var(--accent-gold);
-    font-weight: 700;
-    font-size: 0.9rem;
+    color: var(--accent-gold); font-weight: 700; font-size: 0.9rem;
   }
-  .place-list {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-  }
+  .place-list { display: flex; flex-direction: column; gap: 9px; }
   .place-card {
     padding: 12px 14px;
     background: rgba(0, 210, 255, 0.04);
@@ -791,64 +613,39 @@
     border-radius: 8px;
     transition: all 0.25s ease;
   }
-  .place-card:hover {
-    background: rgba(0, 210, 255, 0.1);
-  }
+  .place-card:hover { background: rgba(0, 210, 255, 0.1); }
   .place-card .place-name {
-    font-weight: 700;
-    color: #fff;
-    font-size: 0.92rem;
-    margin-bottom: 3px;
+    font-weight: 700; color: #fff; font-size: 0.92rem; margin-bottom: 3px;
   }
   .place-card .place-addr {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 5px;
+    font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;
   }
   .place-card .place-meta {
-    font-size: 0.76rem;
-    color: var(--accent-gold);
-    margin-bottom: 6px;
+    font-size: 0.76rem; color: var(--accent-gold); margin-bottom: 6px;
   }
   .place-card .maps-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.74rem;
-    color: var(--primary);
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.74rem; color: var(--primary);
     text-decoration: none;
     padding: 3px 9px;
     background: rgba(0, 210, 255, 0.1);
     border-radius: 6px;
     transition: background 0.25s ease;
   }
-  .place-card .maps-link:hover {
-    background: rgba(0, 210, 255, 0.22);
-  }
+  .place-card .maps-link:hover { background: rgba(0, 210, 255, 0.22); }
 
   /* ============== FORM ============== */
   .form-section {
-    background:
-      linear-gradient(135deg, rgba(0, 210, 255, 0.06), rgba(255, 77, 109, 0.04));
+    background: linear-gradient(135deg, rgba(0, 210, 255, 0.06), rgba(255, 77, 109, 0.04));
   }
   .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
   }
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
   .form-group.full { grid-column: 1 / -1; }
   .form-group label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-weight: 600;
+    font-size: 0.72rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600;
   }
   .form-group input,
   .form-group select,
@@ -858,48 +655,27 @@
     border: 1px solid var(--glass-border);
     border-radius: 9px;
     color: #fff;
-    font-family: inherit;
-    font-size: 0.9rem;
+    font-family: inherit; font-size: 0.9rem;
     transition: border-color 0.25s ease;
   }
   .form-group input:focus,
   .form-group select:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-  }
+  .form-group textarea:focus { outline: none; border-color: var(--primary); }
   .form-group textarea { resize: vertical; min-height: 78px; }
   .form-group select { cursor: pointer; }
-  .form-buttons {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+  .form-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn {
     padding: 11px 20px;
-    border: none;
-    border-radius: 10px;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 0.9rem;
+    border: none; border-radius: 10px;
+    font-family: inherit; font-weight: 600; font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.25s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    flex: 1;
-    justify-content: center;
-    min-width: 170px;
+    display: inline-flex; align-items: center; gap: 7px;
+    flex: 1; justify-content: center; min-width: 170px;
   }
-  .btn-wa {
-    background: linear-gradient(135deg, #25d366, #128c7e);
-    color: #fff;
-  }
+  .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #fff; }
   .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3); }
-  .btn-email {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
-    color: #fff;
-  }
+  .btn-email { background: linear-gradient(135deg, var(--primary), var(--primary-dim)); color: #fff; }
   .btn-email:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 210, 255, 0.3); }
 
   /* ============== FOOTER ============== */
@@ -912,21 +688,15 @@
     backdrop-filter: blur(20px);
   }
   .footer-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 28px;
-    margin-bottom: 22px;
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: 28px; margin-bottom: 22px;
   }
   .footer-brand h3 {
-    font-size: 1.1rem;
-    color: var(--primary);
-    margin-bottom: 8px;
-    font-weight: 700;
+    font-size: 1.1rem; color: var(--primary);
+    margin-bottom: 8px; font-weight: 700;
   }
   .footer-brand p {
-    color: var(--text-muted);
-    font-size: 0.86rem;
-    line-height: 1.7;
+    color: var(--text-muted); font-size: 0.86rem; line-height: 1.7;
   }
   .footer-credits {
     background: rgba(0, 210, 255, 0.04);
@@ -935,96 +705,455 @@
     padding: 18px;
   }
   .footer-credits h4 {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--primary);
-    margin-bottom: 12px;
-    font-weight: 700;
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--primary); margin-bottom: 12px; font-weight: 700;
   }
   .footer-credits .row {
-    font-size: 0.86rem;
-    color: #d2dcef;
-    margin-bottom: 6px;
-    line-height: 1.5;
-    white-space: pre-line;
+    font-size: 0.86rem; color: #d2dcef;
+    margin-bottom: 6px; line-height: 1.5; white-space: pre-line;
   }
   .footer-credits .row strong {
-    color: #fff;
-    display: inline-block;
-    min-width: 90px;
+    color: #fff; display: inline-block; min-width: 90px;
   }
   .footer-bottom {
     border-top: 1px solid var(--glass-border);
     padding-top: 16px;
     text-align: center;
-    color: var(--text-muted);
-    font-size: 0.82rem;
+    color: var(--text-muted); font-size: 0.82rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
   }
   .footer-bottom .heart { color: var(--accent-red); }
+  .footer-admin-link {
+    color: var(--text-muted); font-size: 0.78rem;
+    text-decoration: none;
+    padding: 4px 10px; border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 210, 255, 0.04);
+    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .footer-admin-link:hover {
+    color: var(--primary);
+    background: rgba(0, 210, 255, 0.12);
+    border-color: var(--primary);
+  }
 
   /* ============== BACK TO TOP ============== */
   .back-top {
-    position: fixed;
-    bottom: 22px;
-    right: 22px;
-    width: 44px;
-    height: 44px;
+    position: fixed; bottom: 22px; right: 22px;
+    width: 44px; height: 44px;
     background: rgba(0, 210, 255, 0.15);
     border: 1px solid var(--primary);
     border-radius: 50%;
     color: var(--primary);
     cursor: pointer;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-size: 1.1rem;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: 0; transform: translateY(10px);
     pointer-events: none;
     transition: all 0.3s ease;
     z-index: 50;
   }
-  .back-top.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+  .back-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-top:hover { background: var(--primary); color: #051320; transform: translateY(-3px); }
+
+  /* ============== ADMIN LOGIN MODAL ============== */
+  .admin-login-overlay {
+    position: fixed; inset: 0;
+    background: rgba(5, 11, 24, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 300;
+    padding: 20px;
+    animation: fadeIn 0.25s ease;
   }
-  .back-top:hover {
-    background: var(--primary);
-    color: #051320;
-    transform: translateY(-3px);
+  .admin-login-overlay.active { display: flex; }
+  .admin-login-card {
+    background: rgba(15, 25, 50, 0.96);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    text-align: center;
+    animation: slideUp 0.35s ease;
+    position: relative;
+  }
+  .admin-login-card .login-logo {
+    width: 76px; height: 84px;
+    margin: 0 auto 14px;
+    filter: drop-shadow(0 0 14px rgba(0, 210, 255, 0.4));
+  }
+  .admin-login-card h2 { font-size: 1.2rem; color: #fff; margin-bottom: 4px; }
+  .admin-login-card .subtitle {
+    color: var(--text-muted); font-size: 0.84rem; margin-bottom: 22px;
+  }
+  .admin-login-card .form-group { text-align: left; margin-bottom: 14px; }
+  .admin-login-card .form-group label {
+    display: block; font-size: 0.72rem;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.8px; margin-bottom: 6px; font-weight: 600;
+  }
+  .admin-login-card input {
+    width: 100%; padding: 11px 13px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 9px;
+    color: #fff; font-family: inherit; font-size: 0.92rem;
+  }
+  .admin-login-card input:focus { outline: none; border-color: var(--primary); }
+  .admin-login-card .login-btn {
+    width: 100%; padding: 11px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+    color: #fff; border: none; border-radius: 9px;
+    font-family: inherit; font-weight: 600; font-size: 0.92rem;
+    cursor: pointer; margin-top: 6px;
+    transition: transform 0.25s ease;
+  }
+  .admin-login-card .login-btn:hover { transform: translateY(-2px); }
+  .admin-login-card .login-error {
+    color: var(--accent-red); font-size: 0.8rem;
+    margin-top: 10px; min-height: 18px;
+  }
+  .admin-login-card .login-hint {
+    margin-top: 14px; font-size: 0.74rem;
+    color: var(--text-muted);
+    background: rgba(0, 210, 255, 0.05);
+    padding: 7px 11px; border-radius: 8px;
+    border: 1px dashed var(--glass-border);
+  }
+  .admin-login-card .login-hint code {
+    color: var(--accent-gold);
+    background: rgba(0,0,0,0.3);
+    padding: 1px 6px; border-radius: 4px;
+  }
+  .admin-login-card .modal-close {
+    position: absolute; top: 12px; right: 12px;
   }
 
-  /* ============== RESPONSIVE ============== */
+  /* ============== ADMIN PANEL FULLSCREEN ============== */
+  .admin-panel {
+    position: fixed; inset: 0;
+    background: var(--bg-deep);
+    z-index: 250;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .admin-panel.active { display: flex; animation: fadeIn 0.3s ease; }
+  .admin-panel::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(0, 210, 255, 0.15), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 77, 109, 0.08), transparent 50%);
+  }
+  .admin-header {
+    background: rgba(10, 20, 40, 0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .admin-header-left {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .admin-header-left svg { width: 36px; height: 40px; }
+  .admin-header-text strong {
+    display: block; font-size: 0.95rem; color: #fff; font-weight: 700;
+  }
+  .admin-header-text span {
+    font-size: 0.7rem; color: var(--accent-gold);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .admin-header-actions { display: flex; gap: 8px; align-items: center; }
+  .btn-action {
+    padding: 8px 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 210, 255, 0.06);
+    color: var(--text-muted);
+    font-family: inherit; font-size: 0.82rem;
+    border-radius: 8px;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-action:hover { color: #fff; background: rgba(0, 210, 255, 0.15); }
+  .btn-action.danger {
+    border-color: rgba(255, 77, 109, 0.3); color: var(--accent-red);
+  }
+  .btn-action.danger:hover { background: rgba(255, 77, 109, 0.15); }
+
+  .admin-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 20px 60px;
+  }
+  .admin-container {
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    background: var(--glass-bg);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 22px;
+    backdrop-filter: blur(20px);
+  }
+  .tab-btn {
+    padding: 9px 16px; border: none; background: transparent;
+    color: var(--text-muted);
+    font-family: inherit; font-size: 0.86rem; font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn.active {
+    background: var(--primary); color: #051320; font-weight: 600;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  .admin-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(20px);
+  }
+  .admin-card h3 {
+    font-size: 1.02rem; color: #fff;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .admin-card h3::before {
+    content: ""; width: 3px; height: 18px;
+    background: var(--primary); border-radius: 2px;
+  }
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 12px;
+  }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .field label {
+    display: block; font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 5px; font-weight: 600;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(5, 11, 24, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit; font-size: 0.9rem;
+    transition: border-color 0.25s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--primary);
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field select { cursor: pointer; }
+  .field-hint {
+    font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;
+  }
+
+  .save-bar {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .btn-save {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+    color: #fff; border: none;
+    padding: 10px 20px; border-radius: 8px;
+    font-family: inherit; font-weight: 600; font-size: 0.88rem;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 210, 255, 0.3); }
+  .btn-cancel {
+    background: rgba(255, 77, 109, 0.1);
+    color: var(--accent-red);
+    border: 1px solid rgba(255, 77, 109, 0.3);
+    padding: 10px 16px; border-radius: 8px;
+    font-family: inherit; font-weight: 600; font-size: 0.86rem;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .btn-cancel:hover { background: rgba(255, 77, 109, 0.2); }
+  .btn-add {
+    background: var(--accent-green); color: #042810;
+    border: none; padding: 9px 16px;
+    border-radius: 8px;
+    font-family: inherit; font-weight: 600; font-size: 0.86rem;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+  }
+  .btn-add:hover { transform: translateY(-2px); }
+
+  .culinary-list-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 12px; margin-top: 12px;
+  }
+  .cul-item {
+    padding: 14px;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .cul-emoji { font-size: 2rem; flex-shrink: 0; }
+  .cul-info { flex: 1; min-width: 0; }
+  .cul-info h4 { font-size: 0.95rem; color: #fff; margin-bottom: 3px; }
+  .cul-info p { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 2px; }
+  .cul-region-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    background: rgba(0, 210, 255, 0.12);
+    color: var(--primary); border-radius: 6px;
+    font-size: 0.66rem; margin-right: 5px;
+    text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600;
+  }
+  .cul-tag-badge {
+    display: inline-block;
+    padding: 1px 7px; border-radius: 6px;
+    font-size: 0.66rem; text-transform: uppercase;
+    letter-spacing: 0.4px; font-weight: 600;
+  }
+  .cul-tag-badge.legendaris { background: var(--accent-gold); color: #2a1500; }
+  .cul-tag-badge.kekinian { background: var(--accent-purple); color: #fff; }
+  .cul-tag-badge.tradisional { background: rgba(74, 222, 128, 0.2); color: var(--accent-green); }
+  .cul-actions { display: flex; flex-direction: column; gap: 6px; }
+  .cul-actions button {
+    padding: 5px 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 210, 255, 0.05);
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer; font-family: inherit; font-size: 0.75rem;
+  }
+  .cul-actions button:hover { color: #fff; background: rgba(0, 210, 255, 0.15); }
+  .cul-actions button.del { color: var(--accent-red); border-color: rgba(255, 77, 109, 0.3); }
+  .cul-actions button.del:hover { background: rgba(255, 77, 109, 0.15); }
+
+  .editor-overlay {
+    position: fixed; inset: 0;
+    background: rgba(5, 11, 24, 0.78);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: flex-start; justify-content: center;
+    padding: 30px 18px;
+    z-index: 400;
+    overflow-y: auto;
+  }
+  .editor-overlay.active { display: flex; }
+  .editor {
+    background: rgba(15, 25, 50, 0.97);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 760px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    margin: auto; overflow: hidden;
+    animation: slideUp 0.35s ease;
+  }
+  .editor-head {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .editor-head h3 { font-size: 1.05rem; color: #fff; }
+  .editor-close {
+    width: 32px; height: 32px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer; font-size: 1.05rem;
+    display: grid; place-items: center;
+  }
+  .editor-close:hover { background: rgba(255, 77, 109, 0.2); }
+  .editor-body { padding: 22px 24px; max-height: 70vh; overflow-y: auto; }
+  .editor-foot {
+    padding: 14px 24px;
+    border-top: 1px solid var(--glass-border);
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .place-editor {
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 14px; margin-bottom: 10px;
+  }
+  .place-editor h5 {
+    font-size: 0.78rem; color: var(--primary);
+    margin-bottom: 8px; text-transform: uppercase;
+    letter-spacing: 0.8px; font-weight: 700;
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent-green);
+    color: #042810;
+    padding: 12px 22px; border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+    opacity: 0; pointer-events: none;
+    transition: all 0.35s ease;
+    z-index: 1000; font-size: 0.92rem;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.error { background: var(--accent-red); color: #fff; }
+
+  /* RESPONSIVE */
   @media (max-width: 920px) {
     .nav-menu {
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
+      position: absolute; top: 100%; left: 0; right: 0;
       margin-top: 6px;
       background: rgba(10, 20, 40, 0.95);
       border: 1px solid var(--glass-border);
       border-radius: 12px;
       flex-direction: column;
-      padding: 8px;
-      display: none;
+      padding: 8px; display: none;
       backdrop-filter: blur(20px);
     }
     .nav-menu.open { display: flex; }
     .nav-menu a { width: 100%; padding: 10px 14px; }
-    .nav-toggle { display: flex; }
+    .nav-toggle { display: flex; align-items: center; justify-content: center; }
     .nav-side .nav-pill { display: none; }
     .nav-side .nav-pill.live-pill { display: flex; }
     .footer-grid { grid-template-columns: 1fr; }
   }
-
+  @media (max-width: 720px) {
+    .form-row, .form-row.three { grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px) {
     .form-grid { grid-template-columns: 1fr; }
     .modal-info-grid { grid-template-columns: 1fr; }
   }
-
   @media (max-width: 480px) {
     .container { padding: 86px 12px 16px; }
     .top-nav { padding: 9px 14px; }
@@ -1043,14 +1172,13 @@
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: var(--bg-mid); }
   ::-webkit-scrollbar-thumb {
-    background: var(--primary-dim);
-    border-radius: 4px;
+    background: var(--primary-dim); border-radius: 4px;
   }
 </style>
 </head>
 <body>
 
-<!-- ================ LOADING SCREEN ================ -->
+<!-- ================ LOADING ================ -->
 <div id="loader">
   <svg class="loader-logo" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
     <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
@@ -1067,7 +1195,7 @@
   <div class="loader-percent" id="loaderPercent">0%</div>
 </div>
 
-<!-- ================ STICKY NAV HEADER ================ -->
+<!-- ================ STICKY NAV ================ -->
 <nav class="top-nav" id="topNav">
   <a href="#beranda" class="nav-brand">
     <svg class="nav-shield" viewBox="0 0 100 110">
@@ -1109,7 +1237,7 @@
 
 <div class="container">
 
-  <!-- ================ HERO ================ -->
+  <!-- HERO -->
   <section class="hero reveal" id="beranda">
     <span class="hero-tag">Sura ing Baya · Kota Pahlawan</span>
     <h1>Jelajahi <span class="accent">Kuliner Khas</span><br>Kota Surabaya</h1>
@@ -1118,20 +1246,19 @@
 
   <div class="section-divider"></div>
 
-  <!-- ================ IDENTITAS ================ -->
+  <!-- IDENTITAS -->
   <section class="glass-card reveal" id="identitas">
     <div class="section-head">
       <h2>Identitas Kota Surabaya</h2>
       <p>Mengenal lebih dekat ibu kota Provinsi Jawa Timur</p>
     </div>
-
     <div class="identity-grid" id="identityGrid"></div>
     <p class="identity-text" id="identityNarasi"></p>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ================ YOUTUBE VIDEO ================ -->
+  <!-- YOUTUBE -->
   <section class="glass-card reveal">
     <div class="section-head">
       <h2>Video Sejarah Surabaya</h2>
@@ -1142,12 +1269,15 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
+    <div class="video-fallback">
+      <a id="ytDirectLink" href="#" target="_blank" rel="noopener">▶ Tonton di YouTube</a>
+    </div>
     <p class="video-caption" id="ytCaption"></p>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ================ MENGAPA SURABAYA KAYA KULINER ================ -->
+  <!-- MENGAPA -->
   <section class="glass-card reveal" id="mengapa">
     <div class="section-head">
       <h2>Mengapa Surabaya Kaya Kuliner</h2>
@@ -1165,7 +1295,7 @@
 
   <div class="section-divider"></div>
 
-  <!-- ================ PETA ================ -->
+  <!-- PETA -->
   <section class="glass-card reveal" id="peta">
     <div class="section-head">
       <h2>Peta Wilayah Surabaya</h2>
@@ -1174,109 +1304,119 @@
 
     <div class="map-wrapper">
       <svg class="map-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-        <!-- Selat Madura labels -->
-        <text class="water-label" x="320" y="38">~ Selat Madura ~</text>
+        <!-- Selat Madura -->
+        <text class="water-label" x="400" y="38" text-anchor="middle">~ Selat Madura ~</text>
         <text class="water-label" x="755" y="350" transform="rotate(90 755 350)" font-size="10">Pantai Kenjeran</text>
 
-        <!-- Pulau Madura kecil -->
+        <!-- Pulau Madura -->
         <path d="M 660,5 Q 720,0 800,5 L 800,55 Q 720,60 660,50 Z"
               fill="rgba(0, 210, 255, 0.07)" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1"/>
-        <text class="water-label" x="710" y="35" font-style="normal" font-size="10">MADURA</text>
+        <text class="water-label" x="710" y="35" font-style="normal" font-size="10" text-anchor="middle">MADURA</text>
 
         <!-- Jembatan Suramadu -->
-        <line x1="600" y1="115" x2="685" y2="55" stroke="var(--accent-gold)" stroke-width="2" stroke-dasharray="4,3"/>
-        <circle cx="600" cy="115" r="3" fill="var(--accent-gold)"/>
+        <line x1="640" y1="105" x2="685" y2="55" stroke="var(--accent-gold)" stroke-width="2" stroke-dasharray="4,3"/>
+        <circle cx="640" cy="105" r="3" fill="var(--accent-gold)"/>
         <circle cx="685" cy="55" r="3" fill="var(--accent-gold)"/>
-        <text class="water-label" x="600" y="92" font-size="9">Jembatan Suramadu</text>
+        <text class="water-label" x="640" y="78" font-size="9" text-anchor="middle">Jembatan Suramadu</text>
 
-        <!-- ============ WILAYAH (mengikuti garis batas asli, lebih flowing) ============ -->
+        <!--
+          ============ WILAYAH SURABAYA ============
+          Proporsi mengikuti referensi peta stylized:
+          BARAT = paling besar (kiri), TIMUR = besar (kanan),
+          UTARA = sedang (atas), SELATAN = sedang (bawah-tengah),
+          PUSAT = kecil (tengah)
+        -->
 
-        <!-- SURABAYA UTARA -->
-        <path class="region r-utara" data-region="utara"
-              d="M 95,115 Q 130,100 175,108 Q 220,90 270,105 Q 320,85 370,100 Q 420,82 470,98 Q 520,82 565,108 Q 590,135 605,180
-                 Q 595,210 545,215 L 470,210 L 395,205 L 320,200 L 245,200 L 175,195 L 115,180 Z"/>
-        <text class="region-label" x="350" y="158">SURABAYA UTARA</text>
-        <text class="region-sublabel" x="350" y="174">Tanjung Perak · Kenjeran</text>
-
-        <!-- SURABAYA BARAT -->
+        <!-- SURABAYA BARAT (kiri, paling besar - magenta/pink) -->
         <path class="region r-barat" data-region="barat"
-              d="M 115,180 L 175,195 L 245,200 L 250,275 L 245,355 L 230,425 L 200,470 L 150,485 L 100,490 L 75,460 L 60,400 L 50,330 L 48,260 L 55,200 L 75,145 Z"/>
-        <text class="region-label" x="150" y="305">SURABAYA</text>
-        <text class="region-label" x="150" y="324">BARAT</text>
-        <text class="region-sublabel" x="150" y="343">Pakuwon · Tandes</text>
+              d="M 80,95 L 130,85 L 195,100 L 265,85 L 330,100
+                 L 340,170 L 345,250 L 340,340 L 320,420 L 280,470 L 220,500 L 150,510 L 100,510
+                 L 78,470 L 62,400 L 52,320 L 48,240 L 55,170 L 65,120 Z"/>
+        <text class="region-label" x="160" y="285">SURABAYA</text>
+        <text class="region-label" x="160" y="304">BARAT</text>
+        <text class="region-sublabel" x="160" y="323">Pakal · Tandes · Sambikerep</text>
 
-        <!-- SURABAYA PUSAT -->
+        <!-- SURABAYA UTARA (atas-tengah-kanan - hijau) -->
+        <path class="region r-utara" data-region="utara"
+              d="M 330,100 L 400,82 L 470,98 L 540,82 L 605,100 L 660,108 L 685,135 L 695,180
+                 L 685,210 L 615,212 L 540,210 L 470,213 L 400,210 L 350,205 L 340,170 Z"/>
+        <text class="region-label" x="500" y="158">SURABAYA UTARA</text>
+        <text class="region-sublabel" x="500" y="176">Tanjung Perak · Kenjeran · Bulak</text>
+
+        <!-- SURABAYA PUSAT (kecil, tengah - oranye) -->
         <path class="region r-pusat" data-region="pusat"
-              d="M 245,200 L 320,200 L 395,205 L 470,210 L 478,290 L 470,355 L 395,365 L 320,360 L 250,355 L 250,275 Z"/>
-        <text class="region-label" x="365" y="285">SURABAYA</text>
-        <text class="region-label" x="365" y="304">PUSAT</text>
-        <text class="region-sublabel" x="365" y="322">Tunjungan · Genteng</text>
+              d="M 350,205 L 400,210 L 470,213 L 478,260 L 470,310
+                 L 400,315 L 345,310 L 345,250 Z"/>
+        <text class="region-label" x="412" y="258">SURABAYA</text>
+        <text class="region-label" x="412" y="276">PUSAT</text>
 
-        <!-- SURABAYA TIMUR -->
+        <!-- SURABAYA TIMUR (kanan, besar - biru cyan) -->
         <path class="region r-timur" data-region="timur"
-              d="M 470,210 L 545,215 Q 595,210 605,180 L 625,225 L 650,275 L 675,325 L 695,380 L 695,435 L 675,470 L 640,495 L 600,510 L 555,510 L 510,500 L 478,475 L 470,415 L 466,360 L 470,290 Z"/>
-        <text class="region-label" x="575" y="335">SURABAYA</text>
-        <text class="region-label" x="575" y="354">TIMUR</text>
-        <text class="region-sublabel" x="575" y="372">Mulyorejo · Sukolilo</text>
+              d="M 470,213 L 540,210 L 615,212 L 685,210 L 695,180 L 705,225 L 720,290 L 725,360 L 715,425 L 695,475 L 660,505 L 605,520 L 540,510
+                 L 490,490 L 475,440 L 470,370 L 478,310 L 478,260 Z"/>
+        <text class="region-label" x="595" y="335">SURABAYA</text>
+        <text class="region-label" x="595" y="354">TIMUR</text>
+        <text class="region-sublabel" x="595" y="373">Mulyorejo · Sukolilo · Rungkut</text>
 
-        <!-- SURABAYA SELATAN -->
+        <!-- SURABAYA SELATAN (bawah-tengah - kuning) -->
         <path class="region r-selatan" data-region="selatan"
-              d="M 250,355 L 320,360 L 395,365 L 470,355 L 478,475 L 510,500 L 555,510 L 510,530 L 440,540 L 365,548 L 290,550 L 230,560 L 195,545 L 150,535 L 110,520 L 100,490 L 150,485 L 200,470 L 230,425 L 245,355 Z"/>
-        <text class="region-label" x="335" y="450">SURABAYA SELATAN</text>
-        <text class="region-sublabel" x="335" y="468">Wonokromo · Karangpilang</text>
+              d="M 280,470 L 320,420 L 340,340 L 345,310 L 400,315 L 470,310 L 478,310 L 470,370 L 475,440 L 490,490 L 540,510
+                 L 480,535 L 405,545 L 330,548 L 260,540 L 215,560 L 180,545 L 145,530 L 110,520 L 100,510 L 150,510 L 220,500 Z"/>
+        <text class="region-label" x="340" y="455">SURABAYA</text>
+        <text class="region-label" x="340" y="474">SELATAN</text>
+        <text class="region-sublabel" x="340" y="492">Wonokromo · Karangpilang · Wiyung</text>
 
         <!-- Batas tetangga -->
         <text class="water-label" x="48" y="350" transform="rotate(-90 48 350)" font-style="normal" font-size="9">Kab. Gresik</text>
         <text class="water-label" x="320" y="585" font-style="normal" font-size="9">Kab. Sidoarjo</text>
 
-        <!-- ============ LANDMARK (cuma 3 yang tersisa, hindari tabrakan) ============ -->
-        <!-- Tugu Pahlawan (di Pusat, kecil di kanan atas region) -->
+        <!-- LANDMARK -->
+        <!-- Tugu Pahlawan (di Pusat) -->
         <g class="landmark">
-          <rect x="297" y="232" width="6" height="26" fill="var(--accent-gold)"/>
-          <polygon points="300,225 295,234 305,234" fill="var(--accent-gold)"/>
-          <rect x="294" y="258" width="12" height="3" fill="var(--accent-gold)"/>
-          <text x="300" y="273">Tugu Pahlawan</text>
+          <rect x="409" y="222" width="6" height="22" fill="var(--accent-gold)"/>
+          <polygon points="412,216 408,224 416,224" fill="var(--accent-gold)"/>
+          <rect x="406" y="244" width="12" height="2.5" fill="var(--accent-gold)"/>
+          <text x="412" y="232">Tugu</text>
+          <text x="412" y="200">Pahlawan</text>
         </g>
 
-        <!-- Monumen Kapal Selam (di Pusat, kanan bawah region) -->
+        <!-- Monumen Kapal Selam (di Pusat bawah) -->
         <g class="landmark">
-          <ellipse cx="430" cy="335" rx="11" ry="3.5" fill="#94a3b8"/>
-          <rect x="428" y="330" width="4" height="5" fill="#94a3b8"/>
-          <text x="430" y="350">Monumen Kapal Selam</text>
+          <ellipse cx="430" cy="295" rx="11" ry="3.5" fill="#94a3b8"/>
+          <rect x="428" y="290" width="4" height="5" fill="#94a3b8"/>
+          <text x="430" y="305">Monkasel</text>
         </g>
 
-        <!-- Patung Sura & Baya (di Pusat dekat KBS) -->
+        <!-- Patung Sura & Baya -->
         <g class="landmark">
-          <path d="M 425,395 Q 432,388 440,395 Q 446,400 452,395" fill="none" stroke="var(--accent-red)" stroke-width="1.6"/>
-          <circle cx="430" cy="392" r="1.4" fill="var(--accent-red)"/>
-          <circle cx="446" cy="392" r="1.4" fill="var(--accent-red)"/>
-          <text x="438" y="412">Patung Sura &amp; Baya</text>
+          <path d="M 380,395 Q 386,388 392,395 Q 397,400 402,395" fill="none" stroke="var(--accent-red)" stroke-width="1.5"/>
+          <circle cx="384" cy="392" r="1.3" fill="var(--accent-red)"/>
+          <circle cx="398" cy="392" r="1.3" fill="var(--accent-red)"/>
+          <text x="391" y="412">Patung Sura &amp; Baya</text>
         </g>
       </svg>
     </div>
 
     <div class="map-legend">
-      <div class="legend-item" data-region="utara"><span class="legend-color" style="background:var(--primary)"></span>Surabaya Utara</div>
-      <div class="legend-item" data-region="barat"><span class="legend-color" style="background:var(--accent-purple)"></span>Surabaya Barat</div>
-      <div class="legend-item" data-region="pusat"><span class="legend-color" style="background:var(--accent-gold)"></span>Surabaya Pusat</div>
-      <div class="legend-item" data-region="timur"><span class="legend-color" style="background:var(--accent-green)"></span>Surabaya Timur</div>
-      <div class="legend-item" data-region="selatan"><span class="legend-color" style="background:var(--accent-red)"></span>Surabaya Selatan</div>
+      <div class="legend-item" data-region="utara"><span class="legend-color" style="background:var(--accent-green)"></span>Surabaya Utara</div>
+      <div class="legend-item" data-region="barat"><span class="legend-color" style="background:#e85ca5"></span>Surabaya Barat</div>
+      <div class="legend-item" data-region="pusat"><span class="legend-color" style="background:#ff9f40"></span>Surabaya Pusat</div>
+      <div class="legend-item" data-region="timur"><span class="legend-color" style="background:var(--primary)"></span>Surabaya Timur</div>
+      <div class="legend-item" data-region="selatan"><span class="legend-color" style="background:#ffeb64"></span>Surabaya Selatan</div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ================ DAFTAR KULINER ================ -->
+  <!-- DAFTAR KULINER -->
   <section class="glass-card reveal" id="kuliner">
     <div class="section-head">
       <h2>Daftar Kuliner Khas</h2>
       <p>Klik kartu untuk melihat sejarah, lokasi, dan harga</p>
     </div>
-
     <div class="search-wrap">
       <input type="text" id="searchInput" placeholder="Cari nama makanan atau tempat...">
     </div>
-
     <div class="filter-bar">
       <button class="filter-btn active" data-filter="all">Semua</button>
       <button class="filter-btn" data-filter="utara">Utara</button>
@@ -1287,19 +1427,17 @@
       <button class="filter-btn" data-filter="legendaris">Legendaris</button>
       <button class="filter-btn" data-filter="kekinian">Kekinian</button>
     </div>
-
     <div class="food-grid" id="food-grid"></div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ================ FORM SARAN ================ -->
+  <!-- FORM SARAN -->
   <section class="glass-card form-section reveal" id="saran">
     <div class="section-head">
       <h2>Saran &amp; Rekomendasi Tempat</h2>
       <p>Punya rekomendasi tempat kuliner di Surabaya yang belum tercantum? Kirim ke kami!</p>
     </div>
-
     <form id="recommendForm" onsubmit="return false;">
       <div class="form-grid">
         <div class="form-group">
@@ -1337,28 +1475,26 @@
     </form>
   </section>
 
-  <!-- ================ FOOTER ================ -->
+  <!-- FOOTER -->
   <footer class="reveal">
     <div class="footer-grid">
       <div class="footer-brand">
         <h3>Smart Culinary Surabaya</h3>
         <p>Smart City Dashboard untuk pemetaan kuliner khas Kota Pahlawan. Dibuat sebagai tugas Mata Pelajaran TIK / Informatika untuk mengenalkan kekayaan kuliner Surabaya kepada masyarakat luas.</p>
       </div>
-      <div class="footer-credits" id="footerCredits">
-        <h4>Kredit Pembuat</h4>
-      </div>
+      <div class="footer-credits" id="footerCredits"></div>
     </div>
     <div class="footer-bottom">
       <p>Dibuat dengan <span class="heart">♥</span> untuk Kota Pahlawan · Smart Culinary Surabaya © 2026</p>
+      <a href="#" class="footer-admin-link" id="adminTrigger">🔧 Admin Panel</a>
     </div>
   </footer>
 
 </div>
 
-<!-- Back to top -->
 <button class="back-top" id="backTop" aria-label="Kembali ke atas">↑</button>
 
-<!-- ================ MODAL ================ -->
+<!-- ============== MODAL DETAIL MAKANAN ============== -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-header">
@@ -1390,63 +1526,316 @@
   </div>
 </div>
 
-<!-- Load shared data -->
-<script src="data.js"></script>
+<!-- ============== ADMIN LOGIN MODAL ============== -->
+<div class="admin-login-overlay" id="adminLoginOverlay">
+  <form class="admin-login-card" id="adminLoginForm" onsubmit="return false;">
+    <button type="button" class="modal-close" id="adminLoginClose" aria-label="Tutup">&times;</button>
+    <svg class="login-logo" viewBox="0 0 100 110">
+      <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+      <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+      <polygon points="50,24 46,34 54,34" fill="#fff"/>
+      <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+      <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+      <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+      <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+      <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+    </svg>
+    <h2>Admin Dashboard</h2>
+    <p class="subtitle">Smart Culinary Surabaya</p>
+    <div class="form-group">
+      <label for="adminPass">Password Admin</label>
+      <input type="password" id="adminPass" autocomplete="current-password" placeholder="Masukkan password..." required>
+    </div>
+    <button type="submit" class="login-btn" id="adminLoginBtn">Masuk Dashboard</button>
+    <div class="login-error" id="adminLoginError"></div>
+    <div class="login-hint">
+      Hanya admin yang dapat mengakses dashboard ini.
+    </div>
+  </form>
+</div>
 
+<!-- ============== ADMIN PANEL FULLSCREEN ============== -->
+<div class="admin-panel" id="adminPanel">
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <svg viewBox="0 0 100 110">
+        <path d="M 50,5 L 90,15 L 90,55 Q 90,80 50,103 Q 10,80 10,55 L 10,15 Z" fill="#0099d4" stroke="#ffd24d" stroke-width="2.5"/>
+        <rect x="48" y="32" width="4" height="48" fill="#fff"/>
+        <polygon points="50,24 46,34 54,34" fill="#fff"/>
+        <rect x="44" y="80" width="12" height="3" fill="#fff"/>
+        <path d="M 17,52 Q 24,46 32,50 L 36,53 L 32,55 L 25,56 Z" fill="#ffd24d"/>
+        <polygon points="22,42 26,50 19,52" fill="#ffd24d"/>
+        <path d="M 60,68 L 84,64 L 88,68 L 84,72 L 76,73 L 65,72 Z" fill="#ffd24d"/>
+        <circle cx="83" cy="67" r="0.8" fill="#0099d4"/>
+      </svg>
+      <div class="admin-header-text">
+        <strong>Admin Dashboard</strong>
+        <span>CMS · Smart Culinary</span>
+      </div>
+    </div>
+    <div class="admin-header-actions">
+      <button class="btn-action" id="btnViewSite">↗ Tutup &amp; Lihat Web</button>
+      <button class="btn-action danger" id="btnReset">⟳ Reset Default</button>
+      <button class="btn-action" id="btnLogout">Keluar</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <div class="admin-container">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="identitas">Identitas</button>
+        <button class="tab-btn" data-tab="mengapa">Mengapa Kuliner</button>
+        <button class="tab-btn" data-tab="youtube">Video YouTube</button>
+        <button class="tab-btn" data-tab="footer">Kredit Footer</button>
+        <button class="tab-btn" data-tab="kuliner">Daftar Kuliner</button>
+      </div>
+
+      <!-- Tab: Identitas -->
+      <div class="tab-content active" data-tab="identitas">
+        <div class="admin-card">
+          <h3>Identitas Kota Surabaya</h3>
+          <div class="form-row three">
+            <div class="field"><label>Hari Jadi</label><input type="text" id="iHariJadi"></div>
+            <div class="field"><label>Julukan</label><input type="text" id="iJulukan"></div>
+            <div class="field"><label>Penduduk</label><input type="text" id="iPenduduk"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Luas Wilayah</label><input type="text" id="iLuas"></div>
+            <div class="field"><label>Pesisir</label><input type="text" id="iPesisir"></div>
+          </div>
+          <div class="form-row full">
+            <div class="field">
+              <label>Narasi Sejarah Kota</label>
+              <textarea id="iNarasi" rows="6"></textarea>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" data-save="identitas">💾 Simpan Identitas</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Mengapa -->
+      <div class="tab-content" data-tab="mengapa">
+        <div class="admin-card">
+          <h3>Mengapa Surabaya Kaya Kuliner</h3>
+          <div class="form-row full">
+            <div class="field">
+              <label>Narasi</label>
+              <textarea id="wText" rows="8"></textarea>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" data-save="mengapa">💾 Simpan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: YouTube -->
+      <div class="tab-content" data-tab="youtube">
+        <div class="admin-card">
+          <h3>Video YouTube</h3>
+          <div class="form-row">
+            <div class="field">
+              <label>YouTube Video ID atau URL</label>
+              <input type="text" id="ytIdInput" placeholder="m943fgPhv3s atau https://youtu.be/...">
+              <div class="field-hint">Bisa paste URL YouTube langsung, akan otomatis ekstrak ID-nya.</div>
+            </div>
+            <div class="field">
+              <label>Judul / Caption</label>
+              <input type="text" id="ytTitleInput">
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" data-save="youtube">💾 Simpan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Footer -->
+      <div class="tab-content" data-tab="footer">
+        <div class="admin-card">
+          <h3>Kredit Pembuat (Footer)</h3>
+          <div class="form-row">
+            <div class="field"><label>Kelompok</label><input type="text" id="fKelompok"></div>
+            <div class="field"><label>Kelas</label><input type="text" id="fKelas"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Sekolah</label><input type="text" id="fSekolah"></div>
+            <div class="field"><label>Tahun Ajaran</label><input type="text" id="fTahun"></div>
+          </div>
+          <div class="form-row full">
+            <div class="field"><label>Mata Pelajaran</label><input type="text" id="fMapel"></div>
+          </div>
+          <div class="form-row full">
+            <div class="field">
+              <label>Anggota (1 baris per orang)</label>
+              <textarea id="fAnggota" rows="6" placeholder="1. Nama Lengkap (NIS)&#10;2. Nama Lengkap (NIS)"></textarea>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" data-save="footer">💾 Simpan Kredit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Kuliner -->
+      <div class="tab-content" data-tab="kuliner">
+        <div class="admin-card">
+          <h3>Daftar Kuliner</h3>
+          <p style="color:var(--text-muted); font-size:0.86rem; margin-bottom:10px;">
+            Klik "Edit" untuk mengubah, atau tambah makanan baru.
+          </p>
+          <button class="btn-add" id="btnAddCulinary">+ Tambah Makanan Baru</button>
+          <div class="culinary-list-admin" id="culinaryListAdmin"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Editor Modal -->
+<div class="editor-overlay" id="editorOverlay">
+  <div class="editor">
+    <div class="editor-head">
+      <h3 id="editorTitle">Edit Makanan</h3>
+      <button class="editor-close" id="editorClose">&times;</button>
+    </div>
+    <div class="editor-body">
+      <div class="form-row">
+        <div class="field"><label>Nama Makanan</label><input type="text" id="eName"></div>
+        <div class="field"><label>Emoji</label><input type="text" id="eEmoji" maxlength="2" placeholder="🍲"></div>
+      </div>
+      <div class="form-row three">
+        <div class="field">
+          <label>Wilayah</label>
+          <select id="eRegion">
+            <option value="utara">Surabaya Utara</option>
+            <option value="pusat">Surabaya Pusat</option>
+            <option value="timur">Surabaya Timur</option>
+            <option value="barat">Surabaya Barat</option>
+            <option value="selatan">Surabaya Selatan</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tag</label>
+          <select id="eTag">
+            <option value="tradisional">Tradisional</option>
+            <option value="legendaris">Legendaris</option>
+            <option value="kekinian">Kekinian</option>
+          </select>
+        </div>
+        <div class="field"><label>Kategori</label><input type="text" id="eCategory"></div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Estimasi Harga</label><input type="text" id="ePrice"></div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Sejarah / Deskripsi</label><textarea id="eHistory" rows="5"></textarea></div>
+      </div>
+      <h4 style="color:#fff; font-size:0.95rem; margin: 18px 0 10px;">3 Tempat Populer</h4>
+      <div class="place-editor">
+        <h5>Tempat 1</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace0Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace0Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace0Meta"></div>
+      </div>
+      <div class="place-editor">
+        <h5>Tempat 2</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace1Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace1Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace1Meta"></div>
+      </div>
+      <div class="place-editor">
+        <h5>Tempat 3</h5>
+        <div class="form-row">
+          <div class="field"><label>Nama</label><input type="text" id="ePlace2Name"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="ePlace2Addr"></div>
+        </div>
+        <div class="field"><label>Catatan</label><input type="text" id="ePlace2Meta"></div>
+      </div>
+    </div>
+    <div class="editor-foot">
+      <button class="btn-save" id="editorSave">💾 Simpan</button>
+      <button class="btn-cancel" id="editorCancel">Batal</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="data.js"></script>
 <script>
   /* =========================================================
-     GANTI KONTAK DI BAWAH INI (WhatsApp & Email)
-     Format WA: 62xxxxxxxxxx (tanpa tanda +)
+     >>> GANTI DI SINI <<<
   ========================================================= */
+  const ADMIN_PASSWORD = "akuadmin123";       // ganti password admin
   const KONTAK = {
-    whatsapp: "6281234567890",
-    email:    "kontak@smartculinary.id"
+    whatsapp: "6285714220615",
+    email:    "graciusgracius25@gmail.com"
   };
 
   /* =========================================================
-     RENDER KONTEN DARI DATA
+     RENDER HALAMAN UTAMA
   ========================================================= */
-  const D = window.SC_DATA;
+  let D = window.scLoadData();
 
-  // Identitas
-  const idGrid = document.getElementById('identityGrid');
-  const idItems = [
-    { icon: '📅', value: D.identitas.hariJadi, label: 'Hari Jadi' },
-    { icon: '🏛️', value: D.identitas.julukan,  label: 'Julukan' },
-    { icon: '👥', value: D.identitas.penduduk, label: 'Penduduk' },
-    { icon: '📐', value: D.identitas.luas,     label: 'Luas Wilayah' },
-    { icon: '🌊', value: D.identitas.pesisir,  label: 'Pesisir' },
-  ];
-  idGrid.innerHTML = idItems.map(it =>
-    `<div class="identity-item">
-      <div class="identity-icon">${it.icon}</div>
-      <div class="identity-value">${it.value}</div>
-      <div class="identity-label">${it.label}</div>
-    </div>`
-  ).join('');
-  document.getElementById('identityNarasi').textContent = D.identitas.narasi;
+  function renderAll() {
+    D = window.scLoadData();
+    renderIdentitas();
+    renderYouTube();
+    renderWhy();
+    renderFooter();
+    renderFoods();
+  }
 
-  // YouTube
-  const ytId = D.youtube.id;
-  document.getElementById('ytEmbed').src = `https://www.youtube.com/embed/${ytId}`;
-  document.getElementById('ytCaption').textContent = D.youtube.title;
+  function renderIdentitas() {
+    const idGrid = document.getElementById('identityGrid');
+    const items = [
+      { icon: '📅', value: D.identitas.hariJadi, label: 'Hari Jadi' },
+      { icon: '🏛️', value: D.identitas.julukan,  label: 'Julukan' },
+      { icon: '👥', value: D.identitas.penduduk, label: 'Penduduk' },
+      { icon: '📐', value: D.identitas.luas,     label: 'Luas Wilayah' },
+      { icon: '🌊', value: D.identitas.pesisir,  label: 'Pesisir' },
+    ];
+    idGrid.innerHTML = items.map(it =>
+      `<div class="identity-item">
+        <div class="identity-icon">${it.icon}</div>
+        <div class="identity-value">${it.value}</div>
+        <div class="identity-label">${it.label}</div>
+      </div>`
+    ).join('');
+    document.getElementById('identityNarasi').textContent = D.identitas.narasi;
+  }
 
-  // Why
-  document.getElementById('whyText').textContent = D.whyCulinary;
+  function renderYouTube() {
+    const id = D.youtube.id;
+    // Pakai youtube-nocookie.com untuk lebih ramah embedding
+    document.getElementById('ytEmbed').src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`;
+    document.getElementById('ytDirectLink').href = `https://www.youtube.com/watch?v=${id}`;
+    document.getElementById('ytCaption').textContent = D.youtube.title;
+  }
 
-  // Footer credits
-  const fc = document.getElementById('footerCredits');
-  fc.innerHTML = '<h4>Kredit Pembuat</h4>' +
-    `<div class="row"><strong>Kelompok:</strong> ${D.footer.kelompok}</div>` +
-    `<div class="row"><strong>Anggota:</strong>\n${D.footer.anggota}</div>` +
-    `<div class="row"><strong>Kelas:</strong> ${D.footer.kelas}</div>` +
-    `<div class="row"><strong>Sekolah:</strong> ${D.footer.sekolah}</div>` +
-    `<div class="row"><strong>Mata Pel:</strong> ${D.footer.mapel}</div>` +
-    `<div class="row"><strong>T.A:</strong> ${D.footer.tahun}</div>`;
+  function renderWhy() {
+    document.getElementById('whyText').textContent = D.whyCulinary;
+  }
 
-  /* =========================================================
-     FOOD GRID
-  ========================================================= */
+  function renderFooter() {
+    const fc = document.getElementById('footerCredits');
+    fc.innerHTML = '<h4>Kredit Pembuat</h4>' +
+      `<div class="row"><strong>Kelompok:</strong> ${D.footer.kelompok}</div>` +
+      `<div class="row"><strong>Anggota:</strong>\n${D.footer.anggota}</div>` +
+      `<div class="row"><strong>Kelas:</strong> ${D.footer.kelas}</div>` +
+      `<div class="row"><strong>Sekolah:</strong> ${D.footer.sekolah}</div>` +
+      `<div class="row"><strong>Mata Pel:</strong> ${D.footer.mapel}</div>` +
+      `<div class="row"><strong>T.A:</strong> ${D.footer.tahun}</div>`;
+  }
+
+  /* FOOD GRID */
   const foodGrid = document.getElementById('food-grid');
   let currentFilter = 'all';
   let currentSearch = '';
@@ -1461,8 +1850,8 @@
       const q = currentSearch.toLowerCase();
       list = list.filter(f =>
         f.name.toLowerCase().includes(q) ||
-        f.category.toLowerCase().includes(q) ||
-        f.places.some(p => p.name.toLowerCase().includes(q))
+        (f.category || '').toLowerCase().includes(q) ||
+        (f.places || []).some(p => (p.name || '').toLowerCase().includes(q))
       );
     }
     if (list.length === 0) {
@@ -1472,12 +1861,11 @@
     list.forEach((f, i) => {
       const card = document.createElement('div');
       card.className = 'food-card';
-      card.style.animation = `slideUp 0.4s ease ${i * 0.04}s backwards`;
-      const tagBadge = f.tag === 'legendaris' ? '<span class="food-tag legendaris">LEGEND</span>'
-                     : f.tag === 'kekinian'   ? '<span class="food-tag kekinian">KEKINIAN</span>'
-                     : '';
+      card.style.animation = `cardSlide 0.4s ease ${i * 0.04}s backwards`;
+      const tag = f.tag === 'legendaris' ? '<span class="food-tag legendaris">LEGEND</span>'
+                : f.tag === 'kekinian'   ? '<span class="food-tag kekinian">KEKINIAN</span>' : '';
       card.innerHTML = `
-        ${tagBadge}
+        ${tag}
         <div class="food-emoji">${f.emoji}</div>
         <span class="food-region">${f.regionLabel}</span>
         <h3>${f.name}</h3>
@@ -1487,7 +1875,6 @@
       foodGrid.appendChild(card);
     });
   }
-  renderFoods();
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1497,15 +1884,12 @@
       renderFoods();
     });
   });
-
-  document.getElementById('searchInput').addEventListener('input', (e) => {
+  document.getElementById('searchInput').addEventListener('input', e => {
     currentSearch = e.target.value.trim();
     renderFoods();
   });
 
-  /* =========================================================
-     MODAL
-  ========================================================= */
+  /* MODAL DETAIL */
   const modal = document.getElementById('modal');
   function openModal(id) {
     const f = D.culinary.find(x => x.id === id);
@@ -1516,10 +1900,9 @@
     document.getElementById('modalHistory').textContent = f.history;
     document.getElementById('modalPrice').textContent = f.price;
     document.getElementById('modalCategory').textContent = f.category;
-
     const placesEl = document.getElementById('modalPlaces');
     placesEl.innerHTML = '';
-    f.places.forEach(p => {
+    (f.places || []).forEach(p => {
       const mapsQuery = encodeURIComponent(p.name + ' ' + p.addr);
       const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
       const div = document.createElement('div');
@@ -1532,15 +1915,12 @@
       `;
       placesEl.appendChild(div);
     });
-
     document.querySelectorAll('.region').forEach(r => r.classList.remove('active'));
     const target = document.querySelector(`.region[data-region="${f.region}"]`);
     if (target) target.classList.add('active');
-
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-
   function closeModal() {
     modal.classList.remove('active');
     document.body.style.overflow = '';
@@ -1548,11 +1928,14 @@
   }
   document.getElementById('modalClose').addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeAdminLogin();
+    }
+  });
 
-  /* =========================================================
-     KLIK WILAYAH PETA → FILTER & SCROLL
-  ========================================================= */
+  /* KLIK PETA → FILTER */
   function filterByRegion(key) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     const btn = document.querySelector(`.filter-btn[data-filter="${key}"]`);
@@ -1571,16 +1954,14 @@
       }
     }, 80);
   }
-  document.querySelectorAll('.region').forEach(region => {
-    region.addEventListener('click', () => filterByRegion(region.getAttribute('data-region')));
+  document.querySelectorAll('.region').forEach(r => {
+    r.addEventListener('click', () => filterByRegion(r.getAttribute('data-region')));
   });
   document.querySelectorAll('.legend-item').forEach(item => {
     item.addEventListener('click', () => filterByRegion(item.getAttribute('data-region')));
   });
 
-  /* =========================================================
-     LIVE CLOCK
-  ========================================================= */
+  /* LIVE CLOCK */
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour12: false });
@@ -1590,15 +1971,13 @@
   updateClock();
   setInterval(updateClock, 1000);
 
-  /* =========================================================
-     KIRIM REKOMENDASI
-  ========================================================= */
+  /* FORM REKOMENDASI */
   function kirimRekomendasi(via) {
-    const nama    = document.getElementById('rNama').value.trim();
+    const nama = document.getElementById('rNama').value.trim();
     const wilayah = document.getElementById('rWilayah').value.trim();
     const makanan = document.getElementById('rMakanan').value.trim();
-    const alamat  = document.getElementById('rAlamat').value.trim();
-    const pesan   = document.getElementById('rPesan').value.trim();
+    const alamat = document.getElementById('rAlamat').value.trim();
+    const pesan = document.getElementById('rPesan').value.trim();
     if (!nama || !wilayah || !makanan || !alamat || !pesan) {
       alert('Mohon lengkapi semua kolom terlebih dahulu ya 🙏');
       return;
@@ -1615,9 +1994,7 @@
   }
   window.kirimRekomendasi = kirimRekomendasi;
 
-  /* =========================================================
-     LOADING SCREEN + FADE-IN
-  ========================================================= */
+  /* LOADER */
   const loaderPercent = document.getElementById('loaderPercent');
   let loadProg = 0;
   const loadInt = setInterval(() => {
@@ -1625,7 +2002,6 @@
     if (loadProg >= 100) { loadProg = 100; clearInterval(loadInt); }
     loaderPercent.textContent = Math.round(loadProg) + '%';
   }, 80);
-
   function hideLoader() {
     document.getElementById('loader').classList.add('hidden');
     revealElements();
@@ -1645,9 +2021,7 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
 
-  /* =========================================================
-     NAV: mobile toggle, active highlight, back-to-top
-  ========================================================= */
+  /* NAV MOBILE TOGGLE */
   document.getElementById('navToggle').addEventListener('click', () => {
     document.getElementById('navMenu').classList.toggle('open');
   });
@@ -1657,7 +2031,7 @@
     });
   });
 
-  // Active link berdasarkan scroll
+  /* ACTIVE NAV ON SCROLL */
   const sections = ['beranda','identitas','mengapa','peta','kuliner','saran'];
   function updateActiveNav() {
     let current = 'beranda';
@@ -1672,16 +2046,301 @@
   }
   window.addEventListener('scroll', updateActiveNav);
 
-  // Back to top
+  /* BACK TO TOP */
   const backTop = document.getElementById('backTop');
   window.addEventListener('scroll', () => {
     backTop.classList.toggle('visible', window.scrollY > 500);
   });
   backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Tambah keyframe slideUp untuk food card
+  /* CARD ANIMATION */
   const styleSheet = document.styleSheets[0];
-  styleSheet.insertRule(`@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`, styleSheet.cssRules.length);
+  styleSheet.insertRule(
+    `@keyframes cardSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`,
+    styleSheet.cssRules.length
+  );
+
+  /* ============================================================
+     ============== ADMIN LOGIN & DASHBOARD =====================
+     ============================================================ */
+  const adminLoginOverlay = document.getElementById('adminLoginOverlay');
+  const adminPanel = document.getElementById('adminPanel');
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminPass = document.getElementById('adminPass');
+  const adminLoginError = document.getElementById('adminLoginError');
+
+  function openAdminLogin() {
+    adminLoginError.textContent = '';
+    adminPass.value = '';
+    adminLoginOverlay.classList.add('active');
+    setTimeout(() => adminPass.focus(), 100);
+  }
+  function closeAdminLogin() {
+    adminLoginOverlay.classList.remove('active');
+  }
+  function openAdminPanel() {
+    closeAdminLogin();
+    loadAdminData();
+    adminPanel.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAdminPanel() {
+    adminPanel.classList.remove('active');
+    document.body.style.overflow = '';
+    renderAll(); // refresh halaman utama
+  }
+
+  document.getElementById('adminTrigger').addEventListener('click', e => {
+    e.preventDefault();
+    if (sessionStorage.getItem('sc_admin_login') === 'yes') {
+      openAdminPanel();
+    } else {
+      openAdminLogin();
+    }
+  });
+  document.getElementById('adminLoginClose').addEventListener('click', closeAdminLogin);
+  adminLoginOverlay.addEventListener('click', e => {
+    if (e.target === adminLoginOverlay) closeAdminLogin();
+  });
+
+  adminLoginForm.addEventListener('submit', () => {
+    if (adminPass.value === ADMIN_PASSWORD) {
+      sessionStorage.setItem('sc_admin_login', 'yes');
+      openAdminPanel();
+    } else {
+      adminLoginError.textContent = 'Password salah. Coba lagi.';
+      adminPass.focus();
+      adminPass.select();
+    }
+  });
+
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    sessionStorage.removeItem('sc_admin_login');
+    closeAdminPanel();
+    toast('Berhasil keluar dari admin.');
+  });
+  document.getElementById('btnViewSite').addEventListener('click', closeAdminPanel);
+
+  /* TABS */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.tab-content[data-tab="${tab}"]`).classList.add('active');
+    });
+  });
+
+  /* LOAD DATA INTO ADMIN FORM */
+  let workingData = null;
+  function loadAdminData() {
+    workingData = window.scLoadData();
+    document.getElementById('iHariJadi').value = workingData.identitas.hariJadi;
+    document.getElementById('iJulukan').value  = workingData.identitas.julukan;
+    document.getElementById('iPenduduk').value = workingData.identitas.penduduk;
+    document.getElementById('iLuas').value     = workingData.identitas.luas;
+    document.getElementById('iPesisir').value  = workingData.identitas.pesisir;
+    document.getElementById('iNarasi').value   = workingData.identitas.narasi;
+    document.getElementById('wText').value = workingData.whyCulinary;
+    document.getElementById('ytIdInput').value    = workingData.youtube.id;
+    document.getElementById('ytTitleInput').value = workingData.youtube.title;
+    document.getElementById('fKelompok').value = workingData.footer.kelompok;
+    document.getElementById('fKelas').value    = workingData.footer.kelas;
+    document.getElementById('fSekolah').value  = workingData.footer.sekolah;
+    document.getElementById('fTahun').value    = workingData.footer.tahun;
+    document.getElementById('fMapel').value    = workingData.footer.mapel;
+    document.getElementById('fAnggota').value  = workingData.footer.anggota;
+    renderCulinaryListAdmin();
+  }
+
+  /* SAVE PER SECTION */
+  document.querySelectorAll('.btn-save[data-save]').forEach(btn => {
+    btn.addEventListener('click', () => saveSection(btn.getAttribute('data-save')));
+  });
+
+  function saveSection(section) {
+    if (section === 'identitas') {
+      workingData.identitas = {
+        hariJadi: document.getElementById('iHariJadi').value.trim(),
+        julukan:  document.getElementById('iJulukan').value.trim(),
+        penduduk: document.getElementById('iPenduduk').value.trim(),
+        luas:     document.getElementById('iLuas').value.trim(),
+        pesisir:  document.getElementById('iPesisir').value.trim(),
+        narasi:   document.getElementById('iNarasi').value.trim()
+      };
+    } else if (section === 'mengapa') {
+      workingData.whyCulinary = document.getElementById('wText').value.trim();
+    } else if (section === 'youtube') {
+      let raw = document.getElementById('ytIdInput').value.trim();
+      const m = raw.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+      if (m) raw = m[1];
+      workingData.youtube = {
+        id: raw,
+        title: document.getElementById('ytTitleInput').value.trim()
+      };
+    } else if (section === 'footer') {
+      workingData.footer = {
+        kelompok: document.getElementById('fKelompok').value.trim(),
+        kelas:    document.getElementById('fKelas').value.trim(),
+        sekolah:  document.getElementById('fSekolah').value.trim(),
+        tahun:    document.getElementById('fTahun').value.trim(),
+        mapel:    document.getElementById('fMapel').value.trim(),
+        anggota:  document.getElementById('fAnggota').value
+      };
+    }
+    if (window.scSaveData(workingData)) {
+      toast('Berhasil disimpan!');
+    } else {
+      toast('Gagal menyimpan!', true);
+    }
+  }
+
+  /* CULINARY LIST */
+  const culinaryListAdmin = document.getElementById('culinaryListAdmin');
+  function renderCulinaryListAdmin() {
+    culinaryListAdmin.innerHTML = '';
+    workingData.culinary.forEach((f, idx) => {
+      const div = document.createElement('div');
+      div.className = 'cul-item';
+      div.innerHTML = `
+        <div class="cul-emoji">${f.emoji}</div>
+        <div class="cul-info">
+          <h4>${f.name}</h4>
+          <p>
+            <span class="cul-region-badge">${f.regionLabel}</span>
+            <span class="cul-tag-badge ${f.tag}">${f.tag}</span>
+          </p>
+          <p style="margin-top:4px;">${f.price}</p>
+        </div>
+        <div class="cul-actions">
+          <button class="edit-btn">Edit</button>
+          <button class="del del-btn">Hapus</button>
+        </div>
+      `;
+      div.querySelector('.edit-btn').addEventListener('click', () => openEditor(idx));
+      div.querySelector('.del-btn').addEventListener('click', () => {
+        if (confirm(`Hapus "${f.name}"?`)) {
+          workingData.culinary.splice(idx, 1);
+          if (window.scSaveData(workingData)) {
+            renderCulinaryListAdmin();
+            toast('Berhasil dihapus.');
+          }
+        }
+      });
+      culinaryListAdmin.appendChild(div);
+    });
+  }
+
+  /* EDITOR */
+  const editorOverlay = document.getElementById('editorOverlay');
+  let editingIdx = -1;
+  function openEditor(idx) {
+    editingIdx = idx;
+    if (idx === -1) {
+      document.getElementById('editorTitle').textContent = 'Tambah Makanan Baru';
+      document.getElementById('eName').value = '';
+      document.getElementById('eEmoji').value = '🍲';
+      document.getElementById('eRegion').value = 'pusat';
+      document.getElementById('eTag').value = 'tradisional';
+      document.getElementById('eCategory').value = '';
+      document.getElementById('ePrice').value = '';
+      document.getElementById('eHistory').value = '';
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`ePlace${i}Name`).value = '';
+        document.getElementById(`ePlace${i}Addr`).value = '';
+        document.getElementById(`ePlace${i}Meta`).value = '';
+      }
+    } else {
+      const f = workingData.culinary[idx];
+      document.getElementById('editorTitle').textContent = `Edit: ${f.name}`;
+      document.getElementById('eName').value = f.name;
+      document.getElementById('eEmoji').value = f.emoji;
+      document.getElementById('eRegion').value = f.region;
+      document.getElementById('eTag').value = f.tag;
+      document.getElementById('eCategory').value = f.category;
+      document.getElementById('ePrice').value = f.price;
+      document.getElementById('eHistory').value = f.history;
+      for (let i = 0; i < 3; i++) {
+        const p = (f.places && f.places[i]) || { name: '', addr: '', meta: '' };
+        document.getElementById(`ePlace${i}Name`).value = p.name;
+        document.getElementById(`ePlace${i}Addr`).value = p.addr;
+        document.getElementById(`ePlace${i}Meta`).value = p.meta;
+      }
+    }
+    editorOverlay.classList.add('active');
+  }
+  function closeEditor() { editorOverlay.classList.remove('active'); editingIdx = -1; }
+  document.getElementById('editorClose').addEventListener('click', closeEditor);
+  document.getElementById('editorCancel').addEventListener('click', closeEditor);
+  editorOverlay.addEventListener('click', e => {
+    if (e.target === editorOverlay) closeEditor();
+  });
+  document.getElementById('editorSave').addEventListener('click', () => {
+    const name = document.getElementById('eName').value.trim();
+    if (!name) { toast('Nama makanan wajib diisi!', true); return; }
+    const region = document.getElementById('eRegion').value;
+    const regionMap = {
+      utara: 'Surabaya Utara', pusat: 'Surabaya Pusat',
+      timur: 'Surabaya Timur', barat: 'Surabaya Barat', selatan: 'Surabaya Selatan'
+    };
+    const places = [];
+    for (let i = 0; i < 3; i++) {
+      const pName = document.getElementById(`ePlace${i}Name`).value.trim();
+      if (pName) {
+        places.push({
+          name: pName,
+          addr: document.getElementById(`ePlace${i}Addr`).value.trim(),
+          meta: document.getElementById(`ePlace${i}Meta`).value.trim()
+        });
+      }
+    }
+    const newItem = {
+      id: editingIdx === -1 ? 'cust-' + Date.now() : workingData.culinary[editingIdx].id,
+      name: name,
+      emoji: document.getElementById('eEmoji').value.trim() || '🍽️',
+      region: region,
+      regionLabel: regionMap[region],
+      tag: document.getElementById('eTag').value,
+      category: document.getElementById('eCategory').value.trim(),
+      price: document.getElementById('ePrice').value.trim(),
+      history: document.getElementById('eHistory').value.trim(),
+      places: places
+    };
+    if (editingIdx === -1) workingData.culinary.push(newItem);
+    else workingData.culinary[editingIdx] = newItem;
+    if (window.scSaveData(workingData)) {
+      renderCulinaryListAdmin();
+      closeEditor();
+      toast('Berhasil disimpan!');
+    } else {
+      toast('Gagal menyimpan!', true);
+    }
+  });
+  document.getElementById('btnAddCulinary').addEventListener('click', () => openEditor(-1));
+
+  /* RESET */
+  document.getElementById('btnReset').addEventListener('click', () => {
+    if (confirm('Reset semua data ke default? Perubahan yang sudah disimpan akan hilang.')) {
+      window.scResetData();
+      loadAdminData();
+      toast('Data berhasil direset ke default.');
+    }
+  });
+
+  /* TOAST */
+  let toastTimer;
+  function toast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.toggle('error', !!isError);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  /* INITIAL RENDER */
+  renderAll();
 </script>
 
 </body>
